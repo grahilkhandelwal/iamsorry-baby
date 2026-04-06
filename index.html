@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>i am sorry baby</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #FFFFFF;
+    --bg-secondary: #F6F6F6;
+    --border: #E4E4E4;
+    --border-mid: #C8C8C8;
+    --text: #1A1A1A;
+    --text-muted: #595959;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #F0EEE9;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+
+  .wrap {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 900px;
+    background: var(--bg);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.10);
+    min-height: 600px;
+  }
+
+  /* TOP BAR */
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .logo { font-family: 'Playfair Display', serif; font-style: italic; font-size: 17px; color: var(--text); }
+  .logo span { color: #C94070; }
+  .tagline { font-size: 12px; color: var(--text-muted); }
+
+  /* MAIN GRID */
+  .main { display: grid; grid-template-columns: 290px minmax(0, 1fr); flex: 1; min-height: 0; }
+
+  /* LEFT COLUMN */
+  .left-col { border-right: 1px solid var(--border); display: flex; flex-direction: column; }
+
+  .col-header { padding: 1rem 1.2rem 0.8rem; border-bottom: 1px solid var(--border); }
+  .col-title {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+  .search-box {
+    width: 100%;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 7px 11px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--text);
+    outline: none;
+    margin-bottom: 0.6rem;
+  }
+  .search-box:focus { border-color: #C94070; }
+  .search-box::placeholder { color: #999; }
+
+  /* FILTER TABS */
+  .filter-tabs { display: flex; gap: 4px; flex-wrap: wrap; }
+  .filter-tab {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.12s;
+  }
+  .filter-tab:hover { border-color: #C94070; color: #C94070; }
+  .filter-tab.active { background: #C94070; color: #fff; border-color: #C94070; }
+
+  /* LIST */
+  .mess-list { overflow-y: auto; flex: 1; }
+  .mess-count { font-size: 11px; color: var(--text-muted); padding: 8px 1.2rem 4px; }
+  .mess-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 1.2rem;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.12s;
+    text-align: left;
+  }
+  .mess-item:hover { background: var(--bg-secondary); }
+  .mess-item.active { background: #FBE8EF; border-left: 3px solid #C94070; padding-left: calc(1.2rem - 3px); }
+  .mess-name { font-size: 13px; color: var(--text); line-height: 1.4; flex: 1; }
+  .sev-badge { font-size: 10px; font-weight: 500; padding: 3px 8px; border-radius: 20px; margin-left: 8px; white-space: nowrap; flex-shrink: 0; }
+  .sev-mild    { background: #E8F4D9; color: #2D5A08; }
+  .sev-bad     { background: #FEF0D5; color: #7A4508; }
+  .sev-cooked  { background: #FDEAE4; color: #8B3318; }
+  .sev-nuclear { background: #FCE8E8; color: #8B1A1A; }
+
+  /* RIGHT COLUMN */
+  .right-col { display: flex; flex-direction: column; overflow-y: auto; max-height: 650px; }
+
+  .right-empty {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+  .right-empty h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+  .right-empty p { font-size: 13px; color: var(--text-muted); font-weight: 300; }
+  .arrow-hint { font-size: 28px; margin-bottom: 1rem; color: var(--border-mid); }
+
+  /* ASSESSMENT */
+  .assessment { padding: 2rem 2.5rem; display: none; flex-direction: column; gap: 1rem; max-width: 640px; width: 100%; margin: 0 auto; }
+  .assessment.show { display: flex; }
+
+  .assess-header { display: flex; justify-content: space-between; align-items: flex-start; }
+  .assess-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--text);
+    text-align: left;
+  }
+  .assess-title em { font-style: italic; color: #C94070; }
+
+  /* DAMAGE METER */
+  .damage-meter {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.2rem;
+    text-align: left;
+  }
+  .damage-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; }
+  .damage-label { font-size: 10px; font-weight: 500; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .damage-score { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; }
+  .bar-track { height: 10px; background: #E0E0E0; border-radius: 8px; overflow: hidden; margin-top: 4px; }
+  .bar-fill { height: 100%; border-radius: 8px; transition: width 0.5s ease; }
+  .bar-mild    { background: #4C8C1A; }
+  .bar-bad     { background: #D4820A; }
+  .bar-cooked  { background: #C44820; }
+  .bar-nuclear { background: #C22020; }
+  .damage-desc { font-size: 12px; color: var(--text-muted); margin-top: 0.5rem; line-height: 1.6; }
+
+  /* CARDS */
+  .cards-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.8rem; }
+  .mini-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 0.9rem 1rem;
+    text-align: left;
+  }
+  .mini-card-label { font-size: 10px; font-weight: 500; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.4rem; }
+  .mini-card-text { font-size: 13px; color: var(--text); line-height: 1.5; }
+
+  /* FIX CARD */
+  .fix-card-wrap { position: relative; }
+  .fix-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-left: 3px solid #C94070;
+    border-radius: var(--radius-md);
+    padding: 1rem 1.2rem;
+    text-align: left;
+  }
+  .fix-msg { font-size: 13px; color: var(--text); line-height: 1.7; font-style: italic; }
+  .copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #C94070;
+    color: #fff;
+    border: none;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.12s;
+  }
+  .copy-btn:hover { background: #A83260; }
+  .copy-btn.copied { background: #2D8B3C; }
+
+  /* PLAN */
+  .plan-list { display: flex; flex-direction: column; text-align: left; border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; }
+  .plan-item { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--text); line-height: 1.5; padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); }
+  .plan-item:last-child { border-bottom: none; }
+  .plan-dot {
+    width: 20px;
+    height: 20px;
+    background: #FBE8EF;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    color: #8B2040;
+    margin-top: 1px;
+  }
+
+  /* FORGIVE */
+  .forgive-row { display: flex; align-items: center; gap: 1rem; }
+  .forgive-num { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700; color: #C94070; min-width: 70px; }
+  .forgive-text { font-size: 13px; color: var(--text-muted); line-height: 1.5; text-align: left; }
+
+  /* CTA */
+  .cta-strip {
+    background: #FBE8EF;
+    border: 1px solid #F0B8CC;
+    border-radius: var(--radius-md);
+    padding: 1rem 1.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+  .cta-strip p { font-size: 13px; color: #6B1A32; font-weight: 500; text-align: left; }
+  .cta-btn {
+    background: #C94070;
+    color: #fff;
+    border: none;
+    padding: 9px 20px;
+    border-radius: 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.12s;
+  }
+  .cta-btn:hover { background: #A83260; }
+
+  .sec-title { font-size: 10px; font-weight: 500; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2rem;
+    width: 420px;
+    max-width: 90vw;
+    box-shadow: 0 8px 48px rgba(0,0,0,0.18);
+  }
+  .modal h3 { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; margin-bottom: 0.4rem; color: var(--text); }
+  .modal p { font-size: 13px; color: var(--text-muted); margin-bottom: 1.2rem; line-height: 1.5; }
+  .modal textarea {
+    width: 100%;
+    height: 100px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 10px 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--text);
+    resize: none;
+    outline: none;
+    margin-bottom: 1rem;
+  }
+  .modal textarea:focus { border-color: #C94070; }
+  .modal-footer { display: flex; justify-content: flex-end; gap: 0.6rem; }
+  .modal-cancel {
+    padding: 8px 18px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    color: var(--text-muted);
+  }
+  .modal-submit {
+    padding: 8px 18px;
+    border-radius: 20px;
+    border: none;
+    background: #C94070;
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .modal-submit:hover { background: #A83260; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="top-bar">
+    <div class="logo">i am sorry <span>baby</span></div>
+    <div class="tagline">Pick what you did. Get the fix. Right now.</div>
+  </div>
+
+  <div class="main">
+    <div class="left-col">
+      <div class="col-header">
+        <div class="col-title">What did you mess up?</div>
+        <input class="search-box" placeholder="Search..." id="searchBox" oninput="filterList(this.value)" />
+        <div class="filter-tabs" id="filterTabs">
+          <button class="filter-tab active" onclick="setFilter('all', this)">All</button>
+          <button class="filter-tab" onclick="setFilter('mild', this)">Mild</button>
+          <button class="filter-tab" onclick="setFilter('bad', this)">Bad</button>
+          <button class="filter-tab" onclick="setFilter('cooked', this)">Cooked</button>
+          <button class="filter-tab" onclick="setFilter('nuclear', this)">Nuclear</button>
+        </div>
+      </div>
+      <div class="mess-count" id="messCount"></div>
+      <div class="mess-list" id="messList"></div>
+    </div>
+
+    <div class="right-col">
+      <div class="right-empty" id="emptyState">
+        <div class="arrow-hint">&larr;</div>
+        <h3>Pick your crime.</h3>
+        <p>Select what happened on the left.<br>Your full damage report appears here &mdash; instantly.</p>
+      </div>
+
+      <div class="assessment" id="assessment">
+        <div class="assess-header">
+          <div class="assess-title" id="assessTitle"></div>
+        </div>
+
+        <div class="damage-meter">
+          <div class="damage-row">
+            <div class="damage-label">Damage level</div>
+            <div class="damage-score" id="damageScore">—</div>
+          </div>
+          <div class="bar-track"><div class="bar-fill" id="barFill" style="width:0%"></div></div>
+          <div class="damage-desc" id="damageDesc"></div>
+        </div>
+
+        <div class="cards-row">
+          <div class="mini-card">
+            <div class="mini-card-label">What they're feeling</div>
+            <div class="mini-card-text" id="feeling"></div>
+          </div>
+          <div class="mini-card">
+            <div class="mini-card-label">Your biggest mistake right now</div>
+            <div class="mini-card-text" id="mistake"></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="sec-title" style="margin-bottom:0.5rem;">Send this first</div>
+          <div class="fix-card-wrap">
+            <div class="fix-card">
+              <div class="fix-msg" id="fixMsg"></div>
+            </div>
+            <button class="copy-btn" id="copyBtn" onclick="copyMsg()">Copy</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="sec-title" style="margin-bottom:0.5rem;">Next 48 hours</div>
+          <div class="plan-list" id="planList"></div>
+        </div>
+
+        <div class="damage-meter">
+          <div class="damage-label" style="margin-bottom:0.5rem;">Forgiveness probability</div>
+          <div class="forgive-row">
+            <div class="forgive-num" id="forgivePct">—</div>
+            <div class="forgive-text" id="forgiveText"></div>
+          </div>
+        </div>
+
+        <div class="cta-strip">
+          <p>Want a fully personalised plan for your exact situation?</p>
+          <button class="cta-btn" onclick="openModal()">Tell us more &rarr;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <h3>Tell us what happened</h3>
+    <p>Give us more context and we'll give you a more specific plan. What's the full situation?</p>
+    <textarea id="modalText" placeholder="e.g. We've been together 2 years, she's been under a lot of stress, and this isn't the first time I've done this..."></textarea>
+    <div class="modal-footer">
+      <button class="modal-cancel" onclick="closeModal()">Cancel</button>
+      <button class="modal-submit" onclick="submitModal()">Get my plan &rarr;</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const data = [
+  {
+    name: "Forgot the anniversary", sev: "bad",
+    title: "You forgot the <em>one date</em> that mattered",
+    score: "Bad", pct: 35, barClass: "bar-bad",
+    desc: "This one stings because it signals they're not a priority. Recoverable — but only if you don't try to minimise it.",
+    feeling: "Unimportant. Like the relationship is more routine than meaningful to you.",
+    mistake: "Saying 'I was just busy' or trying to make it up with something expensive quickly.",
+    msg: "I have no excuse. I forgot and I know exactly what that means to you. I'm not going to try and fix it with dinner. I just need you to know I'm genuinely sorry.",
+    plan: ["Don't rush a make-up plan — ask what they actually want first", "Acknowledge it directly, no vague 'I'm sorry for everything'", "Do something small and personal, not expensive and generic", "Set a reminder for every date that matters, forever, starting now"],
+    forgive: "74% — High. This is fixable with genuine acknowledgement and zero excuses."
+  },
+  {
+    name: "Lied about something small", sev: "bad",
+    title: "The lie wasn't the problem. <em>The covering up was.</em>",
+    score: "Bad", pct: 40, barClass: "bar-bad",
+    desc: "Small lies feel safe but hit hard. The real damage is to trust — which takes longer to rebuild than the fight itself.",
+    feeling: "Uncertain. If you lied about this, what else is there? Anxiety, not just anger.",
+    mistake: "Insisting it was 'no big deal' or explaining why you lied like it was logical.",
+    msg: "I lied and that was stupid. It wasn't about the thing itself — I panicked and made it worse. I don't want to be someone you have to fact-check.",
+    plan: ["Stop defending the lie — it's over, own it fully", "Don't over-explain your reasoning, it sounds like more excuses", "Ask them directly what would help rebuild trust", "Be consistent for the next few weeks — actions only"],
+    forgive: "68% — Depends on your history. First offence, high. Pattern, much lower."
+  },
+  {
+    name: "Said something hurtful in a fight", sev: "cooked",
+    title: "You said the thing you <em>knew would land.</em>",
+    score: "You Cooked", pct: 62, barClass: "bar-cooked",
+    desc: "Saying something deliberately hurtful during a fight is a different category than normal arguing. They'll remember the words longer than the fight.",
+    feeling: "Unsafe. Like they have to be careful around you when things get heated.",
+    mistake: "Saying 'I didn't mean it' — they know you did, even if it was a moment of anger.",
+    msg: "What I said was cruel. I knew it would hurt and I said it anyway. That's on me, not on the argument. You deserve better than that from me.",
+    plan: ["Don't justify it by blaming the fight — own the words specifically", "Name what you said. Vague apologies don't land here", "Ask how long they need before talking — don't rush it", "Think about why you go there when you're angry. Real work needed."],
+    forgive: "58% — Words leave marks. Recovery requires time, not just a good apology."
+  },
+  {
+    name: "Ghosted or went cold for days", sev: "cooked",
+    title: "You went silent when <em>they needed you present.</em>",
+    score: "You Cooked", pct: 60, barClass: "bar-cooked",
+    desc: "Withdrawing as a response to conflict is one of the most damaging patterns in a relationship. It communicates: I leave when it gets hard.",
+    feeling: "Abandoned. Like they're alone in this relationship when things get difficult.",
+    mistake: "Coming back like nothing happened, or expecting them to just be over it.",
+    msg: "I shut down and disappeared when you needed me there. That wasn't fair. I'm here now and I'm not going anywhere.",
+    plan: ["Acknowledge the silence specifically — don't gloss over it", "Don't expect them to be warm immediately — they're still processing", "Explain what happened for you, but don't make it an excuse", "Show up consistently for the next two weeks, no cold spells"],
+    forgive: "55% — If this is a pattern, that number drops fast. One-off: recoverable."
+  },
+  {
+    name: "Flirted with someone else", sev: "nuclear",
+    title: "They saw it. Or found out. <em>Either way, it's bad.</em>",
+    score: "Nuclear", pct: 82, barClass: "bar-nuclear",
+    desc: "This one crosses into betrayal territory regardless of 'how far it went.' The trust damage is immediate and significant.",
+    feeling: "Disrespected. Insecure. Questioning everything. Replaying things in their head.",
+    mistake: "Minimising it ('it was just flirting') or getting defensive about their reaction.",
+    msg: "I know there's nothing I can say right now that fixes this. What I did was disrespectful and I'm not going to pretend it wasn't. You have every right to be angry.",
+    plan: ["Give them full space to react — do not interrupt or defend", "Don't contact the other person while things are unresolved", "Be completely transparent going forward — don't make them ask", "This needs a real conversation, not just a text apology"],
+    forgive: "34% — This is a long road. Entirely dependent on relationship history and your actions in the next 72 hours."
+  },
+  {
+    name: "Broke a promise", sev: "bad",
+    title: "You said you would. <em>You didn't.</em>",
+    score: "Bad", pct: 42, barClass: "bar-bad",
+    desc: "Broken promises hit harder than people expect. Every promise you break retrains them to expect less from you.",
+    feeling: "Disappointed. Like hope is getting slowly eroded every time you don't follow through.",
+    mistake: "Offering to make up for it before acknowledging the pattern.",
+    msg: "I said I would and I didn't. No excuse. I know this keeps happening and I understand why that's exhausting.",
+    plan: ["Acknowledge if this is a pattern, not just a one-off", "Don't offer to make up for it immediately — sit in the disappointment first", "Ask what they actually need from you right now", "Only make a promise you can keep right now — one thing, small, reliable"],
+    forgive: "71% — First time, very fixable. Repeated pattern, trust is genuinely eroding."
+  },
+  {
+    name: "Embarrassed them in public", sev: "cooked",
+    title: "You made them feel small <em>in front of people.</em>",
+    score: "You Cooked", pct: 65, barClass: "bar-cooked",
+    desc: "Public humiliation hits differently. It takes away their agency and makes them feel exposed in front of people they may see again.",
+    feeling: "Humiliated. Small. Angry that they couldn't defend themselves in the moment.",
+    mistake: "Saying 'it wasn't that bad' or 'nobody noticed' — they did notice, and so did the others.",
+    msg: "What I did in front of [people] was wrong. You couldn't say anything in the moment and I took advantage of that. I'm genuinely embarrassed by my own behaviour.",
+    plan: ["Acknowledge the public element specifically — that's what made it worse", "Don't make light of it or call them sensitive", "Ask if they need to talk about it or just some space", "Consider if alcohol or ego was involved — be honest with yourself"],
+    forgive: "61% — Recoverable, but they won't forget. How you handle the next 24 hours matters a lot."
+  },
+  {
+    name: "Didn't show up when it mattered", sev: "nuclear",
+    title: "They needed you there. <em>You weren't.</em>",
+    score: "Nuclear", pct: 78, barClass: "bar-nuclear",
+    desc: "Not showing up for a significant moment — funeral, hard day, big event — creates a memory that outlasts the relationship. This is a defining moment.",
+    feeling: "Alone. Like they've learned something real about what you'll do when it counts.",
+    mistake: "Explaining why you couldn't be there. The reason is irrelevant to them right now.",
+    msg: "I wasn't there and I should have been. Nothing else matters right now except that I let you down when it counted. I'm sorry.",
+    plan: ["Do not explain or justify — just acknowledge fully", "Ask what you can do right now, even if the moment has passed", "Be physically present as much as possible in the next few days", "Accept that this will take time — don't rush forgiveness"],
+    forgive: "41% — The severity depends on what the moment was. But this leaves a mark regardless."
+  },
+  {
+    name: "Made fun of something they care about", sev: "bad",
+    title: "You mocked something <em>they let you see.</em>",
+    score: "Bad", pct: 45, barClass: "bar-bad",
+    desc: "When someone shares something they care about and you mock it, they learn to hide parts of themselves from you. That's quiet relationship damage.",
+    feeling: "Silly for caring. Like they need to protect their interests from you.",
+    mistake: "Calling it 'just a joke' — the joke landed on something real.",
+    msg: "I made fun of something that clearly matters to you. That was dismissive and unkind. I don't actually think it's stupid — I was being an idiot.",
+    plan: ["Acknowledge what specifically you mocked — don't be vague", "Ask about the thing you mocked — show actual interest", "Drop the sarcasm entirely for a while, even in jest", "Notice if this is a habit — constant joking at their expense is erosive"],
+    forgive: "76% — Usually fixable quickly if it's an isolated incident and you're genuinely curious about their thing."
+  },
+  {
+    name: "Chose friends/family over them (again)", sev: "cooked",
+    title: "They're tired of coming <em>second.</em>",
+    score: "You Cooked", pct: 58, barClass: "bar-cooked",
+    desc: "One instance is understandable. A pattern communicates hierarchy — and they're not at the top of it.",
+    feeling: "Like an option. Like they have to compete for your attention and they're losing.",
+    mistake: "Defending your loyalty to friends/family like it's in conflict with loyalty to them.",
+    msg: "I know this keeps happening and I know how it looks. You're not asking me to choose — you're asking to not always be the one who gets less. That's fair.",
+    plan: ["Acknowledge the pattern, not just this instance", "Don't frame it as 'family vs you' — that's not what they're saying", "Plan something with them and protect that time — don't move it", "Ask if there's something specific they need from you right now"],
+    forgive: "62% — If the pattern continues, resentment builds quietly until it doesn't."
+  },
+  {
+    name: "Left a message on read for days", sev: "mild",
+    title: "You saw it. You didn't reply. <em>They noticed.</em>",
+    score: "Mild", pct: 18, barClass: "bar-mild",
+    desc: "On its own, not catastrophic. But it signals you're not prioritising them — especially if it happens repeatedly.",
+    feeling: "Dismissed. Like responding to them is optional for you.",
+    mistake: "Saying 'I forgot' when the read receipt is right there.",
+    msg: "I saw your message and didn't reply — that was rude of me. I'm sorry, I should've responded.",
+    plan: ["Just reply. No big speech needed", "If this is a habit, address that directly", "Check in — ask how they're doing, make them feel heard", "Don't let small silences compound into bigger distance"],
+    forgive: "88% — Very fixable. Don't make a bigger deal than it is, just respond and move on."
+  },
+  {
+    name: "Cancelled plans last minute", sev: "bad",
+    title: "They planned their day around you. <em>Then you bailed.</em>",
+    score: "Bad", pct: 38, barClass: "bar-bad",
+    desc: "Last-minute cancellations disrespect the other person's time. One-off is forgivable. A pattern is a message about how much you value their plans.",
+    feeling: "Let down. Like they can't rely on you to follow through.",
+    mistake: "Over-explaining your reason like a good enough excuse makes it okay.",
+    msg: "Cancelling like that wasn't fair to you. I know you planned around this and I let you down. I'm sorry — no excuses.",
+    plan: ["Apologise without turning it into your sob story", "Offer to reschedule immediately — and actually do it", "If this is a pattern, acknowledge that directly", "Show up for the next few plans without fail"],
+    forgive: "69% — First time, very forgivable. Repeat offence, they'll stop making plans with you."
+  },
+  {
+    name: "Compared them to an ex", sev: "nuclear",
+    title: "You brought someone else <em>into the room.</em>",
+    score: "Nuclear", pct: 80, barClass: "bar-nuclear",
+    desc: "Whether it was a compliment or criticism, comparing your partner to an ex is one of the fastest ways to make them feel replaceable. It signals your ex still takes up space in your head.",
+    feeling: "Inadequate. Like they're being measured against someone you used to love.",
+    mistake: "Defending it as 'just an observation' — there was no innocent version of that comparison.",
+    msg: "Comparing you to my ex was wrong. It was unfair and it said more about my own baggage than anything about you. You're not in competition with anyone.",
+    plan: ["Don't try to clarify what you meant — it'll make it worse", "Give them space to feel whatever they're feeling", "Reflect on why the comparison came up at all — that's the real work", "Actively reaffirm what's specific and good about them"],
+    forgive: "38% — This one lingers. Recovery is possible but takes consistent reassurance over time."
+  },
+  {
+    name: "Checked your phone during quality time", sev: "mild",
+    title: "You were there. <em>But you weren't really there.</em>",
+    score: "Mild", pct: 20, barClass: "bar-mild",
+    desc: "It seems small but it sends a clear signal: whatever's on your phone is more interesting than the person in front of you. Do it enough and they stop trying.",
+    feeling: "Boring. Like they can't hold your attention even when they have it.",
+    mistake: "Saying 'I was just checking something quickly' — the frequency is the problem, not the duration.",
+    msg: "I wasn't fully present and you noticed. You deserve my actual attention when we're together. I'm sorry.",
+    plan: ["Put the phone face down — or in another room", "Don't justify it, just change it", "Ask them something genuine — show you're interested in them", "Notice if this is a habit. If it is, it's already costing you more than you think"],
+    forgive: "85% — Very easy to fix, but only if you actually fix it."
+  },
+  {
+    name: "Made a big decision without telling them", sev: "cooked",
+    title: "You decided. <em>Then informed.</em>",
+    score: "You Cooked", pct: 63, barClass: "bar-cooked",
+    desc: "Big decisions made solo — money, plans, life changes — tell your partner they're not actually a partner. They're just someone you update after the fact.",
+    feeling: "Excluded. Like the relationship is on your terms and they're just along for the ride.",
+    mistake: "Explaining why your decision was logical. That's not the point — the point is you didn't include them.",
+    msg: "I made a decision that affected both of us without talking to you first. That wasn't fair. You deserved to be part of that conversation.",
+    plan: ["Don't defend the decision — acknowledge the process was wrong", "Ask how they would have wanted to be involved", "For anything that affects you both, loop them in before deciding", "Earn back their trust by consulting them on the next thing, however small"],
+    forgive: "57% — Depends entirely on the scale of the decision and whether it's a pattern."
+  },
+  {
+    name: "Got defensive instead of listening", sev: "bad",
+    title: "They came to you. <em>You made it about you.</em>",
+    score: "Bad", pct: 37, barClass: "bar-bad",
+    desc: "When someone raises an issue and you respond with defensiveness, they learn that coming to you costs them more than it's worth. Eventually they stop coming.",
+    feeling: "Unheard. Like they have to manage your feelings before they can talk about their own.",
+    mistake: "Counter-listing your own grievances. That's not a conversation, that's a courtroom.",
+    msg: "When you brought that up, I got defensive instead of actually hearing you. I'm sorry. Can we try again? I'll actually listen this time.",
+    plan: ["Let them finish — fully — before you say anything", "Resist the urge to explain or correct", "Ask one question to show you were listening", "Save your perspective for after they feel heard, not before"],
+    forgive: "72% — Fixable immediately if you can actually do it differently next time."
+  },
+  {
+    name: "Brought up old arguments", sev: "bad",
+    title: "You used the past <em>as a weapon.</em>",
+    score: "Bad", pct: 44, barClass: "bar-bad",
+    desc: "Dragging old, resolved issues into a new fight signals you never actually moved on — and that nothing they do will ever truly be forgiven.",
+    feeling: "Like they're trapped. No matter what they do, you'll hold the past against them.",
+    mistake: "Saying 'I just needed to give context' — you didn't need context, you needed ammunition.",
+    msg: "I brought up old stuff that had nothing to do with what we were actually arguing about. That was unfair. This fight deserved to be about just this thing.",
+    plan: ["Keep this argument to this issue only", "If the old issue isn't resolved, address it separately", "Ask yourself why you brought it up — what were you actually trying to say?", "Agree to a rule: one fight at a time"],
+    forgive: "66% — Forgiven quickly if it's rare. If it's your pattern in every fight, that's a bigger problem."
+  },
+  {
+    name: "Took them for granted", sev: "cooked",
+    title: "You stopped noticing. <em>They never stopped caring.</em>",
+    score: "You Cooked", pct: 55, barClass: "bar-cooked",
+    desc: "This one sneaks up on you. It's not a single act — it's a slow accumulation of not noticing, not saying thank you, not showing up with the same energy you used to.",
+    feeling: "Invisible. Like they could disappear and you'd only notice once something stopped getting done.",
+    mistake: "Saying 'but I do so much for you too' — that's not what they're feeling right now.",
+    msg: "I've been going through the motions and you've been giving everything. I see that now. I don't want you to feel like what you do goes unnoticed.",
+    plan: ["Say thank you for something specific — today", "Ask them what they need right now, then actually do it", "Think about when things changed and why — be honest with yourself", "Consistency here matters more than a grand gesture"],
+    forgive: "60% — This is about patterns, not moments. Recovery is slow but possible with sustained effort."
+  }
+];
+
+let filtered = [...data];
+let activeIdx = null;
+let activeFilter = 'all';
+
+function renderList() {
+  const el = document.getElementById('messList');
+  const count = document.getElementById('messCount');
+  count.textContent = filtered.length + ' situation' + (filtered.length !== 1 ? 's' : '');
+  el.innerHTML = filtered.map(item => {
+    const orig = data.indexOf(item);
+    const cls = activeIdx === orig ? ' active' : '';
+    const labels = { mild: 'Mild', bad: 'Bad', cooked: 'Cooked', nuclear: 'Nuclear' };
+    return `<div class="mess-item${cls}" onclick="selectItem(${orig})">
+      <span class="mess-name">${item.name}</span>
+      <span class="sev-badge sev-${item.sev}">${labels[item.sev]}</span>
+    </div>`;
+  }).join('');
+}
+
+function setFilter(sev, btn) {
+  activeFilter = sev;
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+}
+
+function filterList(val) {
+  applyFilters(val);
+}
+
+function applyFilters(searchVal) {
+  const search = searchVal !== undefined ? searchVal : document.getElementById('searchBox').value;
+  filtered = data.filter(d => {
+    const matchSev = activeFilter === 'all' || d.sev === activeFilter;
+    const matchSearch = search.trim() === '' || d.name.toLowerCase().includes(search.toLowerCase());
+    return matchSev && matchSearch;
+  });
+  renderList();
+}
+
+function copyMsg() {
+  const msg = document.getElementById('fixMsg').textContent.replace(/^"/, '').replace(/"$/, '');
+  navigator.clipboard.writeText(msg).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function openModal() {
+  document.getElementById('modalOverlay').classList.add('show');
+  document.getElementById('modalText').focus();
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('show');
+}
+
+function closeModalOutside(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+function submitModal() {
+  const text = document.getElementById('modalText').value.trim();
+  if (!text) { document.getElementById('modalText').focus(); return; }
+  closeModal();
+  alert('Got it. In a real version, this would send your situation for a personalised plan.');
+}
+
+function selectItem(idx) {
+  if (activeIdx === idx) {
+    activeIdx = null;
+    localStorage.removeItem('lastIdx');
+    renderList();
+    document.getElementById('emptyState').style.display = '';
+    document.getElementById('assessment').classList.remove('show');
+    return;
+  }
+  activeIdx = idx;
+  localStorage.setItem('lastIdx', idx);
+  renderList();
+  const d = data[idx];
+  document.getElementById('emptyState').style.display = 'none';
+  const ass = document.getElementById('assessment');
+  ass.classList.add('show');
+  document.getElementById('assessTitle').innerHTML = d.title;
+  document.getElementById('damageScore').textContent = d.score;
+  const scoreColors = { nuclear: '#8B1A1A', cooked: '#8B3318', bad: '#7A4508', mild: '#2D5A08' };
+  document.getElementById('damageScore').style.color = scoreColors[d.sev] || '#7A4508';
+  const fill = document.getElementById('barFill');
+  fill.className = 'bar-fill ' + d.barClass;
+  fill.style.width = d.pct + '%';
+  document.getElementById('damageDesc').textContent = d.desc;
+  document.getElementById('feeling').textContent = d.feeling;
+  document.getElementById('mistake').textContent = d.mistake;
+  document.getElementById('fixMsg').textContent = '\u201C' + d.msg + '\u201D';
+  document.getElementById('planList').innerHTML = d.plan.map((p, i) =>
+    `<div class="plan-item"><div class="plan-dot">${i+1}</div><span>${p}</span></div>`
+  ).join('');
+  document.getElementById('forgivePct').textContent = d.forgive.split('%')[0] + '%';
+  document.getElementById('forgiveText').textContent = d.forgive.split('— ')[1] || '';
+  document.getElementById('copyBtn').textContent = 'Copy';
+  document.getElementById('copyBtn').classList.remove('copied');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Restore last selection
+const last = localStorage.getItem('lastIdx');
+if (last !== null && data[+last]) selectItem(+last);
+
+renderList();
+</script>
+</body>
+</html>
