@@ -20,14 +20,19 @@
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
+  html, body {
+    height: 100%;
+    overflow: hidden;
+  }
+
   body {
     font-family: 'DM Sans', sans-serif;
     background: #F0EEE9;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
-    padding: 2rem 1rem;
+    align-items: center;
+    height: 100vh;
+    padding: 1.5rem;
   }
 
   .wrap {
@@ -35,11 +40,12 @@
     flex-direction: column;
     width: 100%;
     max-width: 900px;
+    height: 100%;
+    max-height: calc(100vh - 3rem);
     background: var(--bg);
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 4px 32px rgba(0,0,0,0.10);
-    min-height: 600px;
   }
 
   /* TOP BAR */
@@ -55,10 +61,10 @@
   .tagline { font-size: 12px; color: var(--text-muted); }
 
   /* MAIN GRID */
-  .main { display: grid; grid-template-columns: 290px minmax(0, 1fr); flex: 1; min-height: 0; }
+  .main { display: grid; grid-template-columns: 290px minmax(0, 1fr); flex: 1; min-height: 0; overflow: hidden; }
 
   /* LEFT COLUMN */
-  .left-col { border-right: 1px solid var(--border); display: flex; flex-direction: column; }
+  .left-col { border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
 
   .col-header { padding: 1rem 1.2rem 0.8rem; border-bottom: 1px solid var(--border); }
   .col-title {
@@ -101,20 +107,22 @@
   .filter-tab.active { background: #C94070; color: #fff; border-color: #C94070; }
 
   /* LIST */
-  .mess-list { overflow-y: auto; flex: 1; }
-  .mess-count { font-size: 11px; color: var(--text-muted); padding: 8px 1.2rem 4px; }
+  .mess-list { overflow-y: auto; flex: 1; padding: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; }
+  .mess-count { font-size: 11px; color: var(--text-muted); padding: 6px 1.2rem 2px; }
   .mess-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 1.2rem;
-    border-bottom: 1px solid var(--border);
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
     cursor: pointer;
-    transition: background 0.12s;
+    transition: all 0.12s;
     text-align: left;
+    background: var(--bg);
   }
-  .mess-item:hover { background: var(--bg-secondary); }
-  .mess-item.active { background: #FBE8EF; border-left: 3px solid #C94070; padding-left: calc(1.2rem - 3px); }
+  .mess-item:hover { background: var(--bg-secondary); border-color: #C94070; }
+  .mess-item.active { background: #FBE8EF; border-color: #C94070; border-left-width: 3px; }
   .mess-name { font-size: 13px; color: var(--text); line-height: 1.4; flex: 1; }
   .sev-badge { font-size: 10px; font-weight: 500; padding: 3px 8px; border-radius: 20px; margin-left: 8px; white-space: nowrap; flex-shrink: 0; }
   .sev-mild    { background: #E8F4D9; color: #2D5A08; }
@@ -122,8 +130,124 @@
   .sev-cooked  { background: #FDEAE4; color: #8B3318; }
   .sev-nuclear { background: #FCE8E8; color: #8B1A1A; }
 
+  /* CUSTOM INPUT */
+  .custom-section {
+    padding: 0.75rem;
+    border-top: 1px solid var(--border);
+  }
+  .custom-label { font-size: 10px; font-weight: 500; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .custom-textarea {
+    width: 100%;
+    height: 72px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 8px 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: var(--text);
+    resize: none;
+    outline: none;
+    background: var(--bg-secondary);
+    line-height: 1.5;
+  }
+  .custom-textarea:focus { border-color: #C94070; background: var(--bg); }
+  .custom-textarea::placeholder { color: #999; }
+  .custom-submit {
+    margin-top: 0.5rem;
+    width: 100%;
+    background: #C94070;
+    color: #fff;
+    border: none;
+    padding: 8px;
+    border-radius: var(--radius-md);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.12s;
+  }
+  .custom-submit:hover { background: #A83260; }
+
   /* RIGHT COLUMN */
-  .right-col { display: flex; flex-direction: column; overflow-y: auto; max-height: 650px; }
+  .right-col { display: flex; flex-direction: column; overflow-y: auto; flex: 1; }
+
+  /* MOBILE BACK BUTTON */
+  .back-btn {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #C94070;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.75rem 1rem;
+    width: 100%;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+  }
+  .back-btn:before { content: '←'; font-size: 16px; margin-right: 4px; }
+
+  /* MOBILE RESPONSIVE */
+  @media (max-width: 640px) {
+    body { padding: 0; align-items: stretch; height: 100vh; overflow: hidden; }
+    .wrap { border-radius: 0; box-shadow: none; height: 100vh; max-height: 100vh; position: relative; overflow: hidden; }
+    .top-bar { padding: 0.85rem 1rem; }
+    .tagline { display: none; }
+
+    .main {
+      grid-template-columns: 1fr;
+      position: relative;
+      overflow: hidden;
+      height: 100%;
+    }
+
+    /* Left panel - always full width */
+    .left-col {
+      border-right: none;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: absolute;
+      inset: 0;
+      background: var(--bg);
+      transition: transform 0.3s ease;
+      z-index: 1;
+    }
+    .left-col.slide-out { transform: translateX(-100%); }
+
+    /* Right panel - slides in from right */
+    .right-col {
+      position: absolute;
+      inset: 0;
+      background: var(--bg);
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      z-index: 2;
+      overflow-y: auto;
+      flex: unset;
+      display: flex !important;
+      flex-direction: column;
+    }
+    .right-col.slide-in { transform: translateX(0); }
+
+    /* Hide empty state on mobile */
+    .right-empty { display: none !important; }
+
+    .back-btn { display: flex; }
+    .assessment { padding: 1rem; max-width: 100%; }
+    .assess-title { font-size: 19px; }
+    .cards-row { grid-template-columns: 1fr; }
+    .cta-strip { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+    .forgive-num { font-size: 30px; }
+    .filter-tabs { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 2px; -webkit-overflow-scrolling: touch; }
+    .filter-tabs::-webkit-scrollbar { display: none; }
+    .mess-item { padding: 13px 12px; }
+    .mess-name { font-size: 14px; }
+    .col-header { padding: 0.85rem 1rem 0.7rem; }
+    .custom-section { padding: 0.75rem 1rem; }
+  }
 
   .right-empty {
     flex: 1;
@@ -356,6 +480,11 @@
       </div>
       <div class="mess-count" id="messCount"></div>
       <div class="mess-list" id="messList"></div>
+      <div class="custom-section">
+        <div class="custom-label">Something else?</div>
+        <textarea class="custom-textarea" id="customInput" placeholder="Describe what happened in your own words..."></textarea>
+        <button class="custom-submit" onclick="submitCustom()">Get my damage report &rarr;</button>
+      </div>
     </div>
 
     <div class="right-col">
@@ -367,13 +496,14 @@
 
       <div class="assessment" id="assessment">
         <div class="assess-header">
+          <button class="back-btn" onclick="goBack()">Back</button>
           <div class="assess-title" id="assessTitle"></div>
         </div>
 
         <div class="damage-meter">
           <div class="damage-row">
             <div class="damage-label">Damage level</div>
-            <div class="damage-score" id="damageScore">—</div>
+            <div class="damage-score" id="damageScore">-</div>
           </div>
           <div class="bar-track"><div class="bar-fill" id="barFill" style="width:0%"></div></div>
           <div class="damage-desc" id="damageDesc"></div>
@@ -408,7 +538,7 @@
         <div class="damage-meter">
           <div class="damage-label" style="margin-bottom:0.5rem;">Forgiveness probability</div>
           <div class="forgive-row">
-            <div class="forgive-num" id="forgivePct">—</div>
+            <div class="forgive-num" id="forgivePct">-</div>
             <div class="forgive-text" id="forgiveText"></div>
           </div>
         </div>
@@ -441,23 +571,23 @@ const data = [
     name: "Forgot the anniversary", sev: "bad",
     title: "You forgot the <em>one date</em> that mattered",
     score: "Bad", pct: 35, barClass: "bar-bad",
-    desc: "This one stings because it signals they're not a priority. Recoverable — but only if you don't try to minimise it.",
+    desc: "This one stings because it signals they're not a priority. Recoverable - but only if you don't try to minimise it.",
     feeling: "Unimportant. Like the relationship is more routine than meaningful to you.",
     mistake: "Saying 'I was just busy' or trying to make it up with something expensive quickly.",
     msg: "I have no excuse. I forgot and I know exactly what that means to you. I'm not going to try and fix it with dinner. I just need you to know I'm genuinely sorry.",
-    plan: ["Don't rush a make-up plan — ask what they actually want first", "Acknowledge it directly, no vague 'I'm sorry for everything'", "Do something small and personal, not expensive and generic", "Set a reminder for every date that matters, forever, starting now"],
-    forgive: "74% — High. This is fixable with genuine acknowledgement and zero excuses."
+    plan: ["Don't rush a make-up plan - ask what they actually want first", "Acknowledge it directly, no vague 'I'm sorry for everything'", "Do something small and personal, not expensive and generic", "Set a reminder for every date that matters, forever, starting now"],
+    forgive: "74% - High. This is fixable with genuine acknowledgement and zero excuses."
   },
   {
     name: "Lied about something small", sev: "bad",
     title: "The lie wasn't the problem. <em>The covering up was.</em>",
     score: "Bad", pct: 40, barClass: "bar-bad",
-    desc: "Small lies feel safe but hit hard. The real damage is to trust — which takes longer to rebuild than the fight itself.",
+    desc: "Small lies feel safe but hit hard. The real damage is to trust - which takes longer to rebuild than the fight itself.",
     feeling: "Uncertain. If you lied about this, what else is there? Anxiety, not just anger.",
     mistake: "Insisting it was 'no big deal' or explaining why you lied like it was logical.",
-    msg: "I lied and that was stupid. It wasn't about the thing itself — I panicked and made it worse. I don't want to be someone you have to fact-check.",
-    plan: ["Stop defending the lie — it's over, own it fully", "Don't over-explain your reasoning, it sounds like more excuses", "Ask them directly what would help rebuild trust", "Be consistent for the next few weeks — actions only"],
-    forgive: "68% — Depends on your history. First offence, high. Pattern, much lower."
+    msg: "I lied and that was stupid. It wasn't about the thing itself - I panicked and made it worse. I don't want to be someone you have to fact-check.",
+    plan: ["Stop defending the lie - it's over, own it fully", "Don't over-explain your reasoning, it sounds like more excuses", "Ask them directly what would help rebuild trust", "Be consistent for the next few weeks - actions only"],
+    forgive: "68% - Depends on your history. First offence, high. Pattern, much lower."
   },
   {
     name: "Said something hurtful in a fight", sev: "cooked",
@@ -465,10 +595,10 @@ const data = [
     score: "You Cooked", pct: 62, barClass: "bar-cooked",
     desc: "Saying something deliberately hurtful during a fight is a different category than normal arguing. They'll remember the words longer than the fight.",
     feeling: "Unsafe. Like they have to be careful around you when things get heated.",
-    mistake: "Saying 'I didn't mean it' — they know you did, even if it was a moment of anger.",
+    mistake: "Saying 'I didn't mean it' - they know you did, even if it was a moment of anger.",
     msg: "What I said was cruel. I knew it would hurt and I said it anyway. That's on me, not on the argument. You deserve better than that from me.",
-    plan: ["Don't justify it by blaming the fight — own the words specifically", "Name what you said. Vague apologies don't land here", "Ask how long they need before talking — don't rush it", "Think about why you go there when you're angry. Real work needed."],
-    forgive: "58% — Words leave marks. Recovery requires time, not just a good apology."
+    plan: ["Don't justify it by blaming the fight - own the words specifically", "Name what you said. Vague apologies don't land here", "Ask how long they need before talking - don't rush it", "Think about why you go there when you're angry. Real work needed."],
+    forgive: "58% - Words leave marks. Recovery requires time, not just a good apology."
   },
   {
     name: "Ghosted or went cold for days", sev: "cooked",
@@ -478,8 +608,8 @@ const data = [
     feeling: "Abandoned. Like they're alone in this relationship when things get difficult.",
     mistake: "Coming back like nothing happened, or expecting them to just be over it.",
     msg: "I shut down and disappeared when you needed me there. That wasn't fair. I'm here now and I'm not going anywhere.",
-    plan: ["Acknowledge the silence specifically — don't gloss over it", "Don't expect them to be warm immediately — they're still processing", "Explain what happened for you, but don't make it an excuse", "Show up consistently for the next two weeks, no cold spells"],
-    forgive: "55% — If this is a pattern, that number drops fast. One-off: recoverable."
+    plan: ["Acknowledge the silence specifically - don't gloss over it", "Don't expect them to be warm immediately - they're still processing", "Explain what happened for you, but don't make it an excuse", "Show up consistently for the next two weeks, no cold spells"],
+    forgive: "55% - If this is a pattern, that number drops fast. One-off: recoverable."
   },
   {
     name: "Flirted with someone else", sev: "nuclear",
@@ -489,8 +619,8 @@ const data = [
     feeling: "Disrespected. Insecure. Questioning everything. Replaying things in their head.",
     mistake: "Minimising it ('it was just flirting') or getting defensive about their reaction.",
     msg: "I know there's nothing I can say right now that fixes this. What I did was disrespectful and I'm not going to pretend it wasn't. You have every right to be angry.",
-    plan: ["Give them full space to react — do not interrupt or defend", "Don't contact the other person while things are unresolved", "Be completely transparent going forward — don't make them ask", "This needs a real conversation, not just a text apology"],
-    forgive: "34% — This is a long road. Entirely dependent on relationship history and your actions in the next 72 hours."
+    plan: ["Give them full space to react - do not interrupt or defend", "Don't contact the other person while things are unresolved", "Be completely transparent going forward - don't make them ask", "This needs a real conversation, not just a text apology"],
+    forgive: "34% - This is a long road. Entirely dependent on relationship history and your actions in the next 72 hours."
   },
   {
     name: "Broke a promise", sev: "bad",
@@ -500,8 +630,8 @@ const data = [
     feeling: "Disappointed. Like hope is getting slowly eroded every time you don't follow through.",
     mistake: "Offering to make up for it before acknowledging the pattern.",
     msg: "I said I would and I didn't. No excuse. I know this keeps happening and I understand why that's exhausting.",
-    plan: ["Acknowledge if this is a pattern, not just a one-off", "Don't offer to make up for it immediately — sit in the disappointment first", "Ask what they actually need from you right now", "Only make a promise you can keep right now — one thing, small, reliable"],
-    forgive: "71% — First time, very fixable. Repeated pattern, trust is genuinely eroding."
+    plan: ["Acknowledge if this is a pattern, not just a one-off", "Don't offer to make up for it immediately - sit in the disappointment first", "Ask what they actually need from you right now", "Only make a promise you can keep right now - one thing, small, reliable"],
+    forgive: "71% - First time, very fixable. Repeated pattern, trust is genuinely eroding."
   },
   {
     name: "Embarrassed them in public", sev: "cooked",
@@ -509,21 +639,21 @@ const data = [
     score: "You Cooked", pct: 65, barClass: "bar-cooked",
     desc: "Public humiliation hits differently. It takes away their agency and makes them feel exposed in front of people they may see again.",
     feeling: "Humiliated. Small. Angry that they couldn't defend themselves in the moment.",
-    mistake: "Saying 'it wasn't that bad' or 'nobody noticed' — they did notice, and so did the others.",
+    mistake: "Saying 'it wasn't that bad' or 'nobody noticed' - they did notice, and so did the others.",
     msg: "What I did in front of [people] was wrong. You couldn't say anything in the moment and I took advantage of that. I'm genuinely embarrassed by my own behaviour.",
-    plan: ["Acknowledge the public element specifically — that's what made it worse", "Don't make light of it or call them sensitive", "Ask if they need to talk about it or just some space", "Consider if alcohol or ego was involved — be honest with yourself"],
-    forgive: "61% — Recoverable, but they won't forget. How you handle the next 24 hours matters a lot."
+    plan: ["Acknowledge the public element specifically - that's what made it worse", "Don't make light of it or call them sensitive", "Ask if they need to talk about it or just some space", "Consider if alcohol or ego was involved - be honest with yourself"],
+    forgive: "61% - Recoverable, but they won't forget. How you handle the next 24 hours matters a lot."
   },
   {
     name: "Didn't show up when it mattered", sev: "nuclear",
     title: "They needed you there. <em>You weren't.</em>",
     score: "Nuclear", pct: 78, barClass: "bar-nuclear",
-    desc: "Not showing up for a significant moment — funeral, hard day, big event — creates a memory that outlasts the relationship. This is a defining moment.",
+    desc: "Not showing up for a significant moment - funeral, hard day, big event - creates a memory that outlasts the relationship. This is a defining moment.",
     feeling: "Alone. Like they've learned something real about what you'll do when it counts.",
     mistake: "Explaining why you couldn't be there. The reason is irrelevant to them right now.",
     msg: "I wasn't there and I should have been. Nothing else matters right now except that I let you down when it counted. I'm sorry.",
-    plan: ["Do not explain or justify — just acknowledge fully", "Ask what you can do right now, even if the moment has passed", "Be physically present as much as possible in the next few days", "Accept that this will take time — don't rush forgiveness"],
-    forgive: "41% — The severity depends on what the moment was. But this leaves a mark regardless."
+    plan: ["Do not explain or justify - just acknowledge fully", "Ask what you can do right now, even if the moment has passed", "Be physically present as much as possible in the next few days", "Accept that this will take time - don't rush forgiveness"],
+    forgive: "41% - The severity depends on what the moment was. But this leaves a mark regardless."
   },
   {
     name: "Made fun of something they care about", sev: "bad",
@@ -531,32 +661,32 @@ const data = [
     score: "Bad", pct: 45, barClass: "bar-bad",
     desc: "When someone shares something they care about and you mock it, they learn to hide parts of themselves from you. That's quiet relationship damage.",
     feeling: "Silly for caring. Like they need to protect their interests from you.",
-    mistake: "Calling it 'just a joke' — the joke landed on something real.",
-    msg: "I made fun of something that clearly matters to you. That was dismissive and unkind. I don't actually think it's stupid — I was being an idiot.",
-    plan: ["Acknowledge what specifically you mocked — don't be vague", "Ask about the thing you mocked — show actual interest", "Drop the sarcasm entirely for a while, even in jest", "Notice if this is a habit — constant joking at their expense is erosive"],
-    forgive: "76% — Usually fixable quickly if it's an isolated incident and you're genuinely curious about their thing."
+    mistake: "Calling it 'just a joke' - the joke landed on something real.",
+    msg: "I made fun of something that clearly matters to you. That was dismissive and unkind. I don't actually think it's stupid - I was being an idiot.",
+    plan: ["Acknowledge what specifically you mocked - don't be vague", "Ask about the thing you mocked - show actual interest", "Drop the sarcasm entirely for a while, even in jest", "Notice if this is a habit - constant joking at their expense is erosive"],
+    forgive: "76% - Usually fixable quickly if it's an isolated incident and you're genuinely curious about their thing."
   },
   {
     name: "Chose friends/family over them (again)", sev: "cooked",
     title: "They're tired of coming <em>second.</em>",
     score: "You Cooked", pct: 58, barClass: "bar-cooked",
-    desc: "One instance is understandable. A pattern communicates hierarchy — and they're not at the top of it.",
+    desc: "One instance is understandable. A pattern communicates hierarchy - and they're not at the top of it.",
     feeling: "Like an option. Like they have to compete for your attention and they're losing.",
     mistake: "Defending your loyalty to friends/family like it's in conflict with loyalty to them.",
-    msg: "I know this keeps happening and I know how it looks. You're not asking me to choose — you're asking to not always be the one who gets less. That's fair.",
-    plan: ["Acknowledge the pattern, not just this instance", "Don't frame it as 'family vs you' — that's not what they're saying", "Plan something with them and protect that time — don't move it", "Ask if there's something specific they need from you right now"],
-    forgive: "62% — If the pattern continues, resentment builds quietly until it doesn't."
+    msg: "I know this keeps happening and I know how it looks. You're not asking me to choose - you're asking to not always be the one who gets less. That's fair.",
+    plan: ["Acknowledge the pattern, not just this instance", "Don't frame it as 'family vs you' - that's not what they're saying", "Plan something with them and protect that time - don't move it", "Ask if there's something specific they need from you right now"],
+    forgive: "62% - If the pattern continues, resentment builds quietly until it doesn't."
   },
   {
     name: "Left a message on read for days", sev: "mild",
     title: "You saw it. You didn't reply. <em>They noticed.</em>",
     score: "Mild", pct: 18, barClass: "bar-mild",
-    desc: "On its own, not catastrophic. But it signals you're not prioritising them — especially if it happens repeatedly.",
+    desc: "On its own, not catastrophic. But it signals you're not prioritising them - especially if it happens repeatedly.",
     feeling: "Dismissed. Like responding to them is optional for you.",
     mistake: "Saying 'I forgot' when the read receipt is right there.",
-    msg: "I saw your message and didn't reply — that was rude of me. I'm sorry, I should've responded.",
-    plan: ["Just reply. No big speech needed", "If this is a habit, address that directly", "Check in — ask how they're doing, make them feel heard", "Don't let small silences compound into bigger distance"],
-    forgive: "88% — Very fixable. Don't make a bigger deal than it is, just respond and move on."
+    msg: "I saw your message and didn't reply - that was rude of me. I'm sorry, I should've responded.",
+    plan: ["Just reply. No big speech needed", "If this is a habit, address that directly", "Check in - ask how they're doing, make them feel heard", "Don't let small silences compound into bigger distance"],
+    forgive: "88% - Very fixable. Don't make a bigger deal than it is, just respond and move on."
   },
   {
     name: "Cancelled plans last minute", sev: "bad",
@@ -565,9 +695,9 @@ const data = [
     desc: "Last-minute cancellations disrespect the other person's time. One-off is forgivable. A pattern is a message about how much you value their plans.",
     feeling: "Let down. Like they can't rely on you to follow through.",
     mistake: "Over-explaining your reason like a good enough excuse makes it okay.",
-    msg: "Cancelling like that wasn't fair to you. I know you planned around this and I let you down. I'm sorry — no excuses.",
-    plan: ["Apologise without turning it into your sob story", "Offer to reschedule immediately — and actually do it", "If this is a pattern, acknowledge that directly", "Show up for the next few plans without fail"],
-    forgive: "69% — First time, very forgivable. Repeat offence, they'll stop making plans with you."
+    msg: "Cancelling like that wasn't fair to you. I know you planned around this and I let you down. I'm sorry - no excuses.",
+    plan: ["Apologise without turning it into your sob story", "Offer to reschedule immediately - and actually do it", "If this is a pattern, acknowledge that directly", "Show up for the next few plans without fail"],
+    forgive: "69% - First time, very forgivable. Repeat offence, they'll stop making plans with you."
   },
   {
     name: "Compared them to an ex", sev: "nuclear",
@@ -575,10 +705,10 @@ const data = [
     score: "Nuclear", pct: 80, barClass: "bar-nuclear",
     desc: "Whether it was a compliment or criticism, comparing your partner to an ex is one of the fastest ways to make them feel replaceable. It signals your ex still takes up space in your head.",
     feeling: "Inadequate. Like they're being measured against someone you used to love.",
-    mistake: "Defending it as 'just an observation' — there was no innocent version of that comparison.",
+    mistake: "Defending it as 'just an observation' - there was no innocent version of that comparison.",
     msg: "Comparing you to my ex was wrong. It was unfair and it said more about my own baggage than anything about you. You're not in competition with anyone.",
-    plan: ["Don't try to clarify what you meant — it'll make it worse", "Give them space to feel whatever they're feeling", "Reflect on why the comparison came up at all — that's the real work", "Actively reaffirm what's specific and good about them"],
-    forgive: "38% — This one lingers. Recovery is possible but takes consistent reassurance over time."
+    plan: ["Don't try to clarify what you meant - it'll make it worse", "Give them space to feel whatever they're feeling", "Reflect on why the comparison came up at all - that's the real work", "Actively reaffirm what's specific and good about them"],
+    forgive: "38% - This one lingers. Recovery is possible but takes consistent reassurance over time."
   },
   {
     name: "Checked your phone during quality time", sev: "mild",
@@ -586,21 +716,21 @@ const data = [
     score: "Mild", pct: 20, barClass: "bar-mild",
     desc: "It seems small but it sends a clear signal: whatever's on your phone is more interesting than the person in front of you. Do it enough and they stop trying.",
     feeling: "Boring. Like they can't hold your attention even when they have it.",
-    mistake: "Saying 'I was just checking something quickly' — the frequency is the problem, not the duration.",
+    mistake: "Saying 'I was just checking something quickly' - the frequency is the problem, not the duration.",
     msg: "I wasn't fully present and you noticed. You deserve my actual attention when we're together. I'm sorry.",
-    plan: ["Put the phone face down — or in another room", "Don't justify it, just change it", "Ask them something genuine — show you're interested in them", "Notice if this is a habit. If it is, it's already costing you more than you think"],
-    forgive: "85% — Very easy to fix, but only if you actually fix it."
+    plan: ["Put the phone face down - or in another room", "Don't justify it, just change it", "Ask them something genuine - show you're interested in them", "Notice if this is a habit. If it is, it's already costing you more than you think"],
+    forgive: "85% - Very easy to fix, but only if you actually fix it."
   },
   {
     name: "Made a big decision without telling them", sev: "cooked",
     title: "You decided. <em>Then informed.</em>",
     score: "You Cooked", pct: 63, barClass: "bar-cooked",
-    desc: "Big decisions made solo — money, plans, life changes — tell your partner they're not actually a partner. They're just someone you update after the fact.",
+    desc: "Big decisions made solo - money, plans, life changes - tell your partner they're not actually a partner. They're just someone you update after the fact.",
     feeling: "Excluded. Like the relationship is on your terms and they're just along for the ride.",
-    mistake: "Explaining why your decision was logical. That's not the point — the point is you didn't include them.",
+    mistake: "Explaining why your decision was logical. That's not the point - the point is you didn't include them.",
     msg: "I made a decision that affected both of us without talking to you first. That wasn't fair. You deserved to be part of that conversation.",
-    plan: ["Don't defend the decision — acknowledge the process was wrong", "Ask how they would have wanted to be involved", "For anything that affects you both, loop them in before deciding", "Earn back their trust by consulting them on the next thing, however small"],
-    forgive: "57% — Depends entirely on the scale of the decision and whether it's a pattern."
+    plan: ["Don't defend the decision - acknowledge the process was wrong", "Ask how they would have wanted to be involved", "For anything that affects you both, loop them in before deciding", "Earn back their trust by consulting them on the next thing, however small"],
+    forgive: "57% - Depends entirely on the scale of the decision and whether it's a pattern."
   },
   {
     name: "Got defensive instead of listening", sev: "bad",
@@ -610,30 +740,30 @@ const data = [
     feeling: "Unheard. Like they have to manage your feelings before they can talk about their own.",
     mistake: "Counter-listing your own grievances. That's not a conversation, that's a courtroom.",
     msg: "When you brought that up, I got defensive instead of actually hearing you. I'm sorry. Can we try again? I'll actually listen this time.",
-    plan: ["Let them finish — fully — before you say anything", "Resist the urge to explain or correct", "Ask one question to show you were listening", "Save your perspective for after they feel heard, not before"],
-    forgive: "72% — Fixable immediately if you can actually do it differently next time."
+    plan: ["Let them finish - fully - before you say anything", "Resist the urge to explain or correct", "Ask one question to show you were listening", "Save your perspective for after they feel heard, not before"],
+    forgive: "72% - Fixable immediately if you can actually do it differently next time."
   },
   {
     name: "Brought up old arguments", sev: "bad",
     title: "You used the past <em>as a weapon.</em>",
     score: "Bad", pct: 44, barClass: "bar-bad",
-    desc: "Dragging old, resolved issues into a new fight signals you never actually moved on — and that nothing they do will ever truly be forgiven.",
+    desc: "Dragging old, resolved issues into a new fight signals you never actually moved on - and that nothing they do will ever truly be forgiven.",
     feeling: "Like they're trapped. No matter what they do, you'll hold the past against them.",
-    mistake: "Saying 'I just needed to give context' — you didn't need context, you needed ammunition.",
+    mistake: "Saying 'I just needed to give context' - you didn't need context, you needed ammunition.",
     msg: "I brought up old stuff that had nothing to do with what we were actually arguing about. That was unfair. This fight deserved to be about just this thing.",
-    plan: ["Keep this argument to this issue only", "If the old issue isn't resolved, address it separately", "Ask yourself why you brought it up — what were you actually trying to say?", "Agree to a rule: one fight at a time"],
-    forgive: "66% — Forgiven quickly if it's rare. If it's your pattern in every fight, that's a bigger problem."
+    plan: ["Keep this argument to this issue only", "If the old issue isn't resolved, address it separately", "Ask yourself why you brought it up - what were you actually trying to say?", "Agree to a rule: one fight at a time"],
+    forgive: "66% - Forgiven quickly if it's rare. If it's your pattern in every fight, that's a bigger problem."
   },
   {
     name: "Took them for granted", sev: "cooked",
     title: "You stopped noticing. <em>They never stopped caring.</em>",
     score: "You Cooked", pct: 55, barClass: "bar-cooked",
-    desc: "This one sneaks up on you. It's not a single act — it's a slow accumulation of not noticing, not saying thank you, not showing up with the same energy you used to.",
+    desc: "This one sneaks up on you. It's not a single act - it's a slow accumulation of not noticing, not saying thank you, not showing up with the same energy you used to.",
     feeling: "Invisible. Like they could disappear and you'd only notice once something stopped getting done.",
-    mistake: "Saying 'but I do so much for you too' — that's not what they're feeling right now.",
+    mistake: "Saying 'but I do so much for you too' - that's not what they're feeling right now.",
     msg: "I've been going through the motions and you've been giving everything. I see that now. I don't want you to feel like what you do goes unnoticed.",
-    plan: ["Say thank you for something specific — today", "Ask them what they need right now, then actually do it", "Think about when things changed and why — be honest with yourself", "Consistency here matters more than a grand gesture"],
-    forgive: "60% — This is about patterns, not moments. Recovery is slow but possible with sustained effort."
+    plan: ["Say thank you for something specific - today", "Ask them what they need right now, then actually do it", "Think about when things changed and why - be honest with yourself", "Consistency here matters more than a grand gesture"],
+    forgive: "60% - This is about patterns, not moments. Recovery is slow but possible with sustained effort."
   },
   {
     name: "Said 'calm down' during a fight", sev: "bad",
@@ -641,21 +771,21 @@ const data = [
     score: "Bad", pct: 36, barClass: "bar-bad",
     desc: "'Calm down' is one of the most reliably counterproductive things you can say in an argument. It signals you think their emotion is the problem, not what caused it.",
     feeling: "Dismissed. Like their feelings are inconvenient to you rather than valid.",
-    mistake: "Following up with 'I was just trying to help' — you weren't helping, you were shutting down.",
+    mistake: "Following up with 'I was just trying to help' - you weren't helping, you were shutting down.",
     msg: "Telling you to calm down was wrong. Your reaction made sense. I should have listened instead of trying to manage how you were feeling.",
-    plan: ["Don't try to regulate their emotions — let them feel what they feel", "Ask what they need from you right now", "If the conversation got too heated, ask for a break properly — not by dismissing them", "Notice if you do this often — it's a pattern worth breaking"],
-    forgive: "73% — Easy to recover from if you own it quickly. Do it repeatedly and they'll stop coming to you."
+    plan: ["Don't try to regulate their emotions - let them feel what they feel", "Ask what they need from you right now", "If the conversation got too heated, ask for a break properly - not by dismissing them", "Notice if you do this often - it's a pattern worth breaking"],
+    forgive: "73% - Easy to recover from if you own it quickly. Do it repeatedly and they'll stop coming to you."
   },
   {
     name: "Told their secret to someone else", sev: "nuclear",
     title: "They trusted you with something. <em>You didn't keep it.</em>",
     score: "Nuclear", pct: 85, barClass: "bar-nuclear",
-    desc: "Sharing someone's private information — even casually, even with good intentions — is a fundamental breach of trust. They told you because they felt safe. Now that safety is gone.",
+    desc: "Sharing someone's private information - even casually, even with good intentions - is a fundamental breach of trust. They told you because they felt safe. Now that safety is gone.",
     feeling: "Exposed and betrayed. Like they have to audit everything they've ever told you.",
-    mistake: "Saying 'I didn't think it was a big deal' or 'I only told one person' — both make it worse.",
+    mistake: "Saying 'I didn't think it was a big deal' or 'I only told one person' - both make it worse.",
     msg: "I shared something you told me in confidence and I had no right to do that. I'm not going to make excuses. I broke your trust and I'm sorry.",
-    plan: ["Don't minimise what was shared or to whom", "Ask if they want to know who knows — be honest", "Understand this will take real time to rebuild", "Stop sharing their personal information with anyone, full stop"],
-    forgive: "31% — One of the hardest to recover from. Possible, but only with complete honesty and a lot of patience from them."
+    plan: ["Don't minimise what was shared or to whom", "Ask if they want to know who knows - be honest", "Understand this will take real time to rebuild", "Stop sharing their personal information with anyone, full stop"],
+    forgive: "31% - One of the hardest to recover from. Possible, but only with complete honesty and a lot of patience from them."
   },
   {
     name: "Gave advice when they just needed to vent", sev: "mild",
@@ -663,32 +793,32 @@ const data = [
     score: "Mild", pct: 22, barClass: "bar-mild",
     desc: "Jumping to fix-it mode when someone vents feels helpful but lands as dismissive. It signals you're more focused on resolving the situation than understanding how they feel.",
     feeling: "Like they can't just express themselves around you without it becoming a problem to be solved.",
-    mistake: "Defending your advice as 'I was just trying to help' — intent doesn't change the impact.",
+    mistake: "Defending your advice as 'I was just trying to help' - intent doesn't change the impact.",
     msg: "I went straight into advice mode when you just needed me to listen. I'm sorry. Do you want to tell me again? I'll actually just be here this time.",
-    plan: ["Ask first: 'Do you want my thoughts or just want to vent?'", "Practice staying quiet and nodding — it's harder than it sounds", "Validate before you advise, always", "Save your suggestions for when they actually ask"],
-    forgive: "89% — Very fixable. The ask-first habit alone will change everything."
+    plan: ["Ask first: 'Do you want my thoughts or just want to vent?'", "Practice staying quiet and nodding - it's harder than it sounds", "Validate before you advise, always", "Save your suggestions for when they actually ask"],
+    forgive: "89% - Very fixable. The ask-first habit alone will change everything."
   },
   {
     name: "Brought up breaking up during a fight", sev: "nuclear",
     title: "You used the relationship itself <em>as a threat.</em>",
     score: "Nuclear", pct: 88, barClass: "bar-nuclear",
-    desc: "Mentioning breaking up during an argument — even if you didn't mean it — plants a seed of instability that's very hard to uproot. They will now wonder if you mean it every time things get hard.",
+    desc: "Mentioning breaking up during an argument - even if you didn't mean it - plants a seed of instability that's very hard to uproot. They will now wonder if you mean it every time things get hard.",
     feeling: "Unsafe. Like the relationship is always one bad argument away from ending.",
-    mistake: "Saying 'I didn't mean it' immediately — they need time before reassurance lands.",
-    msg: "Bringing up breaking up was out of line. I said it in anger and it wasn't fair. I don't want to end this — I want to fix what we were fighting about.",
-    plan: ["Give them space to process — don't rush to reassure", "When they're ready, have the original fight properly", "Agree to never use the relationship as leverage in arguments", "Understand this will come up again — be patient when it does"],
-    forgive: "36% — Depends heavily on relationship history. Said once in genuine anger: recoverable. Said repeatedly: a serious red flag they'll start to believe."
+    mistake: "Saying 'I didn't mean it' immediately - they need time before reassurance lands.",
+    msg: "Bringing up breaking up was out of line. I said it in anger and it wasn't fair. I don't want to end this - I want to fix what we were fighting about.",
+    plan: ["Give them space to process - don't rush to reassure", "When they're ready, have the original fight properly", "Agree to never use the relationship as leverage in arguments", "Understand this will come up again - be patient when it does"],
+    forgive: "36% - Depends heavily on relationship history. Said once in genuine anger: recoverable. Said repeatedly: a serious red flag they'll start to believe."
   },
   {
     name: "Forgot to introduce them to people", sev: "bad",
     title: "You left them standing there. <em>Like they weren't there.</em>",
     score: "Bad", pct: 33, barClass: "bar-bad",
-    desc: "Being forgotten in an introduction feels small from the outside but stings deeply. It signals — even if unintentionally — that they don't register as important enough to include.",
+    desc: "Being forgotten in an introduction feels small from the outside but stings deeply. It signals - even if unintentionally - that they don't register as important enough to include.",
     feeling: "Invisible. Like an accessory, not a partner.",
-    mistake: "Saying 'I just forgot, it wasn't intentional' — they know, but it still hurt.",
+    mistake: "Saying 'I just forgot, it wasn't intentional' - they know, but it still hurt.",
     msg: "I didn't introduce you and that was thoughtless of me. You shouldn't have had to stand there feeling invisible. I'm sorry.",
-    plan: ["Acknowledge it happened — don't wait for them to bring it up", "Make the introduction retroactively if possible", "Pay attention in group settings — actively include them", "Check in with them at social events instead of assuming they're fine"],
-    forgive: "78% — Quickly forgivable if acknowledged immediately. Ignored, it festers into something bigger."
+    plan: ["Acknowledge it happened - don't wait for them to bring it up", "Make the introduction retroactively if possible", "Pay attention in group settings - actively include them", "Check in with them at social events instead of assuming they're fine"],
+    forgive: "78% - Quickly forgivable if acknowledged immediately. Ignored, it festers into something bigger."
   },
   {
     name: "Checked their phone without asking", sev: "cooked",
@@ -696,10 +826,504 @@ const data = [
     score: "You Cooked", pct: 67, barClass: "bar-cooked",
     desc: "Going through someone's phone without permission is a privacy violation regardless of what you found. It also reveals something about your own trust levels that now needs to be addressed.",
     feeling: "Violated. And now on the defensive even though they didn't do anything.",
-    mistake: "Justifying it with what you found, or saying 'if you have nothing to hide...' — that's not the point.",
+    mistake: "Justifying it with what you found, or saying 'if you have nothing to hide...' - that's not the point.",
     msg: "Going through your phone was wrong. That's your private space and I had no right. Whatever I was feeling, that wasn't the way to handle it.",
-    plan: ["Do not lead with what you found — you need to own the action first", "Talk about what made you feel insecure enough to do it", "Understand that trust has to be rebuilt on both sides now", "If suspicion is a recurring issue, that's the real conversation to have"],
-    forgive: "52% — If nothing was found: recoverable with work. If used to justify further accusations: much harder."
+    plan: ["Do not lead with what you found - you need to own the action first", "Talk about what made you feel insecure enough to do it", "Understand that trust has to be rebuilt on both sides now", "If suspicion is a recurring issue, that's the real conversation to have"],
+    forgive: "52% - If nothing was found: recoverable with work. If used to justify further accusations: much harder."
+  },
+
+  // MILD
+  {
+    name: "Didn't notice their haircut or new outfit", sev: "mild",
+    title: "They made an effort. <em>You didn't see it.</em>",
+    score: "Mild", pct: 15, barClass: "bar-mild",
+    desc: "Missing a change someone made to how they look signals you're not paying attention. It's small but adds up over time.",
+    feeling: "Invisible. Like they could change completely and you wouldn't notice.",
+    mistake: "Overcorrecting with fake enthusiasm after they point it out.",
+    msg: "I didn't notice and I should have. You looked great. I'm sorry for not saying something.",
+    plan: ["Pay attention when they get ready or come home", "Make it a habit to notice small changes", "Don't make a big deal of it now - just be more present going forward", "Ask about what they've been thinking about changing - show actual interest"],
+    forgive: "91% - Very easy fix. Just start paying attention."
+  },
+  {
+    name: "Fell asleep during their favourite show or movie", sev: "mild",
+    title: "They wanted to share something. <em>You were asleep.</em>",
+    score: "Mild", pct: 12, barClass: "bar-mild",
+    desc: "Falling asleep isn't malicious but it tells them their interests don't hold your attention enough to stay awake for.",
+    feeling: "Mildly dismissed. Like their enthusiasm is one-sided.",
+    mistake: "Pretending you saw more than you did when they ask what you thought.",
+    msg: "I fell asleep and missed it. I want to watch it again with you properly - actually awake this time.",
+    plan: ["Offer to rewatch it, genuinely", "Don't promise to watch something when you're already tired", "If you can't stay awake, say so before - not after", "Show interest in the thing they wanted to share"],
+    forgive: "93% - Barely registers if you handle it with a smile and a genuine rewatch offer."
+  },
+  {
+    name: "Forgot to say good morning or goodnight", sev: "mild",
+    title: "The small things are <em>actually the big things.</em>",
+    score: "Mild", pct: 10, barClass: "bar-mild",
+    desc: "Routines of connection matter. When they disappear without explanation, the other person notices the absence even if they don't say it.",
+    feeling: "Like they're drifting to the back of your mind.",
+    mistake: "Saying 'it's just a text' - to them it's not just a text.",
+    msg: "I've been off with the small stuff lately. That matters and I know it. Good morning.",
+    plan: ["Bring the habit back without making it a whole conversation", "Don't explain it to death - just do it", "Check in about whether they noticed the distance", "Consistency here costs nothing and means a lot"],
+    forgive: "94% - Not even a fight if you just quietly start doing it again."
+  },
+  {
+    name: "Didn't ask how their day went", sev: "mild",
+    title: "You talked about yourself. <em>You forgot to ask about them.</em>",
+    score: "Mild", pct: 14, barClass: "bar-mild",
+    desc: "It's easy to slip into monologue mode. But consistently not asking makes people feel like a supporting character in their own relationship.",
+    feeling: "Like a listener, not a partner.",
+    mistake: "Asking but then immediately steering back to yourself.",
+    msg: "I've been bad at asking and actually listening. How are you doing - genuinely, I want to know.",
+    plan: ["Ask first before launching into your own day", "Listen to the answer without redirecting to yourself", "Follow up on things they've mentioned before - shows you were listening", "Make it a daily habit, not an occasional gesture"],
+    forgive: "90% - Very recoverable. The ask itself goes a long way."
+  },
+  {
+    name: "Laughed at the wrong moment", sev: "mild",
+    title: "They were being serious. <em>You thought it was funny.</em>",
+    score: "Mild", pct: 16, barClass: "bar-mild",
+    desc: "Laughing at the wrong moment reads as mockery even when it isn't. It makes people reluctant to be vulnerable or serious with you.",
+    feeling: "Embarrassed. Like their feelings are material for comedy.",
+    mistake: "Saying 'I wasn't laughing at you' before apologising for the impact.",
+    msg: "That wasn't the moment to laugh and I know that. I wasn't mocking you - but the timing was wrong and I'm sorry.",
+    plan: ["Read the room before reacting", "Apologise for the impact, not just the intention", "Ask them to continue what they were saying", "Let them see you taking it seriously now"],
+    forgive: "88% - Usually forgiven quickly if you acknowledge it and re-engage seriously."
+  },
+  {
+    name: "Took too long to say 'I love you' back", sev: "mild",
+    title: "The pause was longer <em>than it should have been.</em>",
+    score: "Mild", pct: 20, barClass: "bar-mild",
+    desc: "Even a second's hesitation in the wrong moment can plant doubt that lingers. They'll replay it.",
+    feeling: "Uncertain. Wondering if you meant it or were just reflexively responding.",
+    mistake: "Overexplaining the pause to the point it sounds like you're backpedalling.",
+    msg: "I love you. I know that came out weird and I'm sorry - there's no hesitation in how I feel about you.",
+    plan: ["Say it clearly and warmly - no explanation needed", "Show it through action in the next few days", "Don't bring up the moment again - move forward", "Make sure they feel secure, not analysed"],
+    forgive: "87% - Easy to recover from with a clear, warm follow-up."
+  },
+
+  // BAD
+  {
+    name: "Spoke over them in a conversation", sev: "bad",
+    title: "You cut them off. <em>In front of people.</em>",
+    score: "Bad", pct: 30, barClass: "bar-bad",
+    desc: "Being interrupted repeatedly - especially in front of others - makes someone feel like their words don't matter. It's dismissive even when unintentional.",
+    feeling: "Small. Like their thoughts are less important than yours.",
+    mistake: "Saying 'I just got excited' - that explains it but doesn't fix it.",
+    msg: "I keep cutting you off and I hate that I do it. You deserve to finish your thought. I'm working on it.",
+    plan: ["Catch yourself mid-interruption and stop", "Let them finish before responding - even if you have a great point", "In group settings, actively create space for them to speak", "Ask them if this has been bothering them - it probably has been for a while"],
+    forgive: "70% - Annoying pattern but forgiven quickly when you visibly change the behaviour."
+  },
+  {
+    name: "Made plans that affected them without asking", sev: "bad",
+    title: "You assumed. <em>You should have asked.</em>",
+    score: "Bad", pct: 38, barClass: "bar-bad",
+    desc: "Making plans that involve someone else's time or space without checking is a partnership failure. It treats them as a given rather than a person with their own schedule and preferences.",
+    feeling: "Like their time and input don't factor into your decisions.",
+    mistake: "Saying 'I thought you'd be fine with it' - that's not the same as asking.",
+    msg: "I made that plan without checking with you and that wasn't right. I should have asked first.",
+    plan: ["For anything that affects their time or space, ask before confirming", "Accept that they might say no - and respect it", "Don't frame it as 'I was going to ask' - just start asking", "Check in about upcoming weekends or plans before committing to anything"],
+    forgive: "72% - Easily forgiven if you build the habit of asking. If it keeps happening, resentment builds."
+  },
+  {
+    name: "Didn't back them up in an argument with others", sev: "bad",
+    title: "They needed you on their side. <em>You weren't.</em>",
+    score: "Bad", pct: 44, barClass: "bar-bad",
+    desc: "Not supporting your partner in a conflict with other people - even if you have reservations - leaves them feeling alone and undermined. You can disagree privately. Publicly, you're a team.",
+    feeling: "Abandoned. Like you chose the other person's comfort over theirs.",
+    mistake: "Explaining that the other person 'had a point' right after they were upset.",
+    msg: "I should have backed you up and I didn't. Even if I had thoughts about it, that wasn't the moment to voice them. I'm sorry.",
+    plan: ["Agree to present a united front in public, even if you disagree privately", "Have the nuanced conversation later, at home", "Acknowledge that staying quiet read as taking the other side", "Ask how they're feeling about it now - don't assume it's resolved"],
+    forgive: "65% - Stings more than it looks. Forgiven faster when you address it properly and show you understand why it hurt."
+  },
+  {
+    name: "Complained about them to your friends", sev: "bad",
+    title: "You aired it out. <em>In the wrong room.</em>",
+    score: "Bad", pct: 47, barClass: "bar-bad",
+    desc: "Venting to friends about your partner is normal up to a point. But consistently painting them in a negative light to your social circle creates a version of them that's harder to walk back.",
+    feeling: "Exposed and betrayed. Wondering what your friends actually think of them now.",
+    mistake: "Saying 'I was just venting' - the words still left the room.",
+    msg: "I talked about our stuff with people I shouldn't have. That wasn't fair to you and I'm sorry.",
+    plan: ["Vent to one trusted person who won't hold it against them", "Don't share things they'd be hurt to know you shared", "Go to them first when you have an issue - not your friends", "Think about whether your friends' impression of them is unfairly shaped"],
+    forgive: "62% - Depends on what was said and who heard it. Fixable if it stops."
+  },
+  {
+    name: "Gave them the silent treatment", sev: "bad",
+    title: "You went quiet on purpose. <em>That's not conflict resolution.</em>",
+    score: "Bad", pct: 45, barClass: "bar-bad",
+    desc: "The silent treatment is a form of emotional withdrawal that punishes the other person rather than resolving anything. It leaves them anxious and helpless.",
+    feeling: "Punished without trial. Anxious and not sure how to fix something they don't fully understand.",
+    mistake: "Waiting for them to come to you and 'earn' your words back.",
+    msg: "Going quiet on you was unfair. I was hurt but I handled it wrong. Can we talk?",
+    plan: ["Say you need time - not just silence with no explanation", "Set a return time: 'I need an hour, then I'll be ready to talk'", "Don't weaponise silence as punishment", "Address the original issue once you're both calm"],
+    forgive: "64% - Recoverable if you break the pattern and talk. Repeated use damages trust significantly."
+  },
+  {
+    name: "Showed up late again", sev: "bad",
+    title: "Time is respect. <em>And yours has been running short.</em>",
+    score: "Bad", pct: 35, barClass: "bar-bad",
+    desc: "Being consistently late signals that your time is worth more than theirs. One instance is forgivable. A pattern is a statement.",
+    feeling: "Unimportant. Like they're not worth being on time for.",
+    mistake: "Leading with the reason before apologising for the impact.",
+    msg: "I keep doing this and I know it's not okay. Your time matters. I'm working on it.",
+    plan: ["Apologise for the pattern, not just this instance", "Set alarms earlier than you think you need", "If you're going to be late, message - don't make them wait wondering", "Ask if this has been affecting how they feel - it probably has"],
+    forgive: "68% - One-off: very forgivable. Habit: they're already exhausted by it."
+  },
+  {
+    name: "Made a sarcastic comment that landed wrong", sev: "bad",
+    title: "It was a joke. <em>Until it wasn't.</em>",
+    score: "Bad", pct: 32, barClass: "bar-bad",
+    desc: "Sarcasm is high risk in relationships. When it lands on an insecurity or a sore spot, it lands hard - regardless of intent.",
+    feeling: "Stung. And slightly embarrassed that they weren't in on the joke.",
+    mistake: "Saying 'I was joking' as if that ends the conversation.",
+    msg: "That came out wrong and it landed somewhere it shouldn't have. I wasn't trying to be mean - but I was, and I'm sorry.",
+    plan: ["Own the impact, not just the intent", "Think about whether sarcasm has become a default mode", "Ask if there are topics that are off-limits for jokes - and honour them", "Make up for it with something genuine and kind"],
+    forgive: "74% - Usually forgiven with a genuine apology. Repeated 'just joking' as cover gets old fast."
+  },
+  {
+    name: "Posted something about them without asking", sev: "bad",
+    title: "Not everything shared privately <em>is shared publicly.</em>",
+    score: "Bad", pct: 36, barClass: "bar-bad",
+    desc: "Posting someone without their consent - even something harmless-seeming - removes their control over their own image and story.",
+    feeling: "Exposed. Like their boundaries didn't occur to you.",
+    mistake: "Saying 'it was a nice photo' - that's not the point.",
+    msg: "I should have checked with you before posting that. You get to control what's out there about you. I'm taking it down if you want.",
+    plan: ["Default to asking before posting anything that includes them", "If they want it removed, remove it immediately without argument", "Think about whether this is a repeated pattern", "Respect that some people are more private than others online"],
+    forgive: "70% - Very fixable. Offer to take it down and actually do it."
+  },
+  {
+    name: "Forgot to defend them when someone was rude", sev: "bad",
+    title: "Someone was rude to them. <em>You said nothing.</em>",
+    score: "Bad", pct: 42, barClass: "bar-bad",
+    desc: "Staying silent when someone disrespects your partner reads as complicity. Even a small 'hey, that wasn't okay' would have meant everything.",
+    feeling: "Alone in it. Like they had to defend themselves while you watched.",
+    mistake: "Saying 'I didn't want to make it worse' - that sounds like your comfort mattered more than their dignity.",
+    msg: "I should have said something in that moment and I didn't. That wasn't okay and you deserved better from me.",
+    plan: ["Acknowledge you should have spoken up", "Ask how they're feeling about it - don't assume it's over", "Agree on a code or signal for moments like this going forward", "Make it clear to them you have their back even when you freeze"],
+    forgive: "66% - Stings because it felt like abandonment. Address it directly and they'll feel more protected going forward."
+  },
+  {
+    name: "Talked about your ex unprompted", sev: "bad",
+    title: "They didn't ask. <em>You brought them anyway.</em>",
+    score: "Bad", pct: 40, barClass: "bar-bad",
+    desc: "Bringing up an ex unprompted is unsettling regardless of how it's framed. It signals your ex still occupies mental real estate they didn't know was for rent.",
+    feeling: "Insecure. Wondering why your ex came to mind in that moment.",
+    mistake: "Defending the mention by saying it was 'just context' - context they didn't need.",
+    msg: "I shouldn't have brought that up. It wasn't relevant and I understand why it felt weird. Sorry.",
+    plan: ["Don't volunteer ex-related information unless directly asked", "If it comes up naturally, keep it brief and close it", "Acknowledge why the mention was uncomfortable", "Redirect the conversation to the present - to them"],
+    forgive: "69% - Forgiven easily if it's rare. Patterns of ex-mentions become a red flag."
+  },
+
+  // COOKED
+  {
+    name: "Said 'you're being dramatic'", sev: "cooked",
+    title: "You dismissed their feelings <em>with five words.</em>",
+    score: "You Cooked", pct: 62, barClass: "bar-cooked",
+    desc: "'You're being dramatic' is one of the most invalidating things you can say. It reframes their emotion as a performance and positions you as the rational one. You're not.",
+    feeling: "Gaslit. Like they have to justify the right to feel what they're feeling.",
+    mistake: "Following it up with 'I'm just being honest' - that's not honesty, that's dismissal with branding.",
+    msg: "Telling you that you were being dramatic was wrong. Your feelings make sense. I shouldn't have said that.",
+    plan: ["Never use 'dramatic', 'sensitive', or 'overreacting' during a conflict", "Ask what they're feeling before deciding how large it is", "Understand that your threshold for reaction is not the standard", "Repair by actually engaging with what they were upset about"],
+    forgive: "56% - Needs real acknowledgement. Saying sorry isn't enough if you don't change the habit."
+  },
+  {
+    name: "Told them to 'get over it'", sev: "cooked",
+    title: "You put a deadline <em>on their feelings.</em>",
+    score: "You Cooked", pct: 60, barClass: "bar-cooked",
+    desc: "'Get over it' communicates that you're done engaging and their emotional timeline is inconvenient. People don't forget being told that.",
+    feeling: "Like a burden. Like their healing is a problem for you.",
+    mistake: "Saying it was said in frustration as if that makes it land differently.",
+    msg: "Telling you to get over it was cruel. You're allowed to feel what you feel for as long as you need to. I'm sorry.",
+    plan: ["Acknowledge that you're not entitled to their recovery timeline", "Ask what they need right now - don't decide for them", "Remove 'get over it', 'move on', and 'let it go' from your conflict vocabulary", "Sit in the discomfort of unresolved tension - it's part of being in a relationship"],
+    forgive: "57% - Cuts deep. Forgiven with time and consistent change in how you handle their emotions."
+  },
+  {
+    name: "Started following suspicious accounts online", sev: "cooked",
+    title: "It wasn't about the account. <em>It was about what it meant.</em>",
+    score: "You Cooked", pct: 55, barClass: "bar-cooked",
+    desc: "Following certain accounts online can feel like a breach of the implicit agreements in a relationship. Whether or not it 'means anything', the message it sends matters.",
+    feeling: "Insecure and second-guessing. Wondering what you're looking for that they're not giving.",
+    mistake: "Saying 'it's just Instagram' - they know that, and it still bothered them.",
+    msg: "I understand why that was uncomfortable. I'm not going to be dismissive about it. Let's talk about it.",
+    plan: ["Don't dismiss the concern as irrational", "Have an honest conversation about what it brought up for them", "Reflect on whether the habit serves the relationship", "Make them feel like enough - that's the real issue underneath"],
+    forgive: "59% - Depends on trust history. Have the conversation rather than defending the follow."
+  },
+  {
+    name: "Shared a screenshot of their messages", sev: "cooked",
+    title: "What was private <em>is no longer private.</em>",
+    score: "You Cooked", pct: 68, barClass: "bar-cooked",
+    desc: "Sharing someone's private messages - even with good intentions - is a significant trust violation. They shared those words with you, not with whoever else has seen them now.",
+    feeling: "Betrayed. Like nothing they say to you is safe.",
+    mistake: "Justifying it with 'I needed someone's opinion' - that doesn't make it okay.",
+    msg: "I shared something you said to me privately and I shouldn't have. That wasn't mine to share and I'm sorry.",
+    plan: ["Acknowledge exactly what you shared and with whom", "Don't justify the reason - own the action", "Understand this will affect how much they open up to you going forward", "Prove over time that you can be trusted with their words again"],
+    forgive: "53% - Significant breach. Recovery requires complete honesty and demonstrated change."
+  },
+  {
+    name: "Cancelled a trip or big plan you'd both committed to", sev: "cooked",
+    title: "They built around this. <em>You pulled it.</em>",
+    score: "You Cooked", pct: 64, barClass: "bar-cooked",
+    desc: "Cancelling something you'd both planned and looked forward to isn't just a scheduling problem - it's a disappointment that can overshadow the event itself.",
+    feeling: "Deflated. And possibly humiliated if they'd already told people.",
+    mistake: "Focusing on rescheduling before acknowledging how disappointing this is.",
+    msg: "I know you were looking forward to this and I've let you down. I'm genuinely sorry - not just about the plan but about what it means.",
+    plan: ["Sit with the disappointment before jumping to solutions", "Ask how they're feeling - don't assume they're okay", "If there's a valid reason, explain it briefly - don't over-justify", "Let them lead on whether and when to reschedule"],
+    forgive: "57% - Depends on the reason. Unavoidable emergency: forgivable. Avoidable: harder. Repeated: they'll stop looking forward to things with you."
+  },
+  {
+    name: "Made a joke about their insecurity", sev: "cooked",
+    title: "They trusted you with that. <em>You made it a punchline.</em>",
+    score: "You Cooked", pct: 65, barClass: "bar-cooked",
+    desc: "Using someone's insecurity as comedy - even affectionately - signals that their vulnerability is safe to mock. It isn't.",
+    feeling: "Humiliated. And regretting that they ever shared it with you.",
+    mistake: "Saying 'I thought you were past that' - that's not yours to decide.",
+    msg: "I made a joke about something you trusted me with and that was wrong. I'm sorry. I won't do it again.",
+    plan: ["Treat their insecurities as off-limits for humour, always", "Acknowledge the specific thing you joked about - don't be vague", "Ask if they're okay - the damage might be bigger than it looks", "Think about whether comedy is a deflection pattern for you in close moments"],
+    forgive: "58% - Needs a real apology and visible change. If they're still making jokes about it, you haven't learned."
+  },
+  {
+    name: "Read their diary or journal", sev: "cooked",
+    title: "Some things aren't meant <em>for your eyes.</em>",
+    score: "You Cooked", pct: 72, barClass: "bar-cooked",
+    desc: "Reading someone's private journal is a fundamental privacy violation. What's written there was never meant to be shared - and now you have information that changes how you see them.",
+    feeling: "Completely exposed. And angry that their private space was invaded.",
+    mistake: "Bringing up what you read as if that justifies reading it.",
+    msg: "I read your journal and I had no right to do that. That was your private space and I violated it. I'm sorry.",
+    plan: ["Do not bring up anything you read - it makes it worse", "Own the action completely without deflection", "Understand they may never fully trust that space again", "Reflect on why you felt compelled to look - that's the real work"],
+    forgive: "49% - Serious violation. Recovery is possible but takes significant time and consistent trustworthiness."
+  },
+  {
+    name: "Lied about where you were", sev: "cooked",
+    title: "It wasn't where you went. <em>It was that you hid it.</em>",
+    score: "You Cooked", pct: 70, barClass: "bar-cooked",
+    desc: "Lying about your location - even for something innocent - destroys trust faster than the thing you were trying to hide. Now they'll question everything.",
+    feeling: "Like they don't actually know you. What else has been hidden?",
+    mistake: "Minimising it by saying 'I wasn't doing anything bad' - the lie is the problem, not just the location.",
+    msg: "I lied about where I was. I wasn't doing anything I should be ashamed of, but I lied anyway - and that's the thing I need to own.",
+    plan: ["Be fully honest about where you actually were", "Don't make the conversation about what you were doing - make it about the lie", "Ask them what they need to feel secure again", "Radical transparency going forward - don't make them ask"],
+    forgive: "51% - If the location was innocent, the lie is still the problem. Rebuild through consistency and honesty."
+  },
+
+  // NUCLEAR
+  {
+    name: "Had an emotional affair", sev: "nuclear",
+    title: "The feelings were real. <em>So is the damage.</em>",
+    score: "Nuclear", pct: 86, barClass: "bar-nuclear",
+    desc: "An emotional affair - sharing intimacy, vulnerability, and connection with someone outside the relationship - is a profound breach even without physical contact. Often it hurts more.",
+    feeling: "Like a stranger. Wondering who you really are and what the relationship actually means.",
+    mistake: "Saying 'nothing physical happened' as if that should limit how hurt they are.",
+    msg: "What happened was real and it was a betrayal. I'm not going to downplay it. You deserved better than this.",
+    plan: ["Do not minimise it as 'just emotional' - that makes it worse", "End all contact with the other person completely", "Be prepared for a very long recovery process", "Couples therapy is not optional here if you want to save this"],
+    forgive: "29% - One of the hardest. Some relationships don't survive this. If yours will, it requires complete honesty and sustained effort."
+  },
+  {
+    name: "Blocked them during an argument", sev: "nuclear",
+    title: "You didn't pause the fight. <em>You deleted them from it.</em>",
+    score: "Nuclear", pct: 78, barClass: "bar-nuclear",
+    desc: "Blocking someone during an active conflict is one of the most destabilising things you can do. It removes their ability to reach you and leaves them powerless at the worst moment.",
+    feeling: "Panicked and humiliated. Staring at 'message failed to send' during a crisis.",
+    mistake: "Unblocking later and acting like it was no big deal.",
+    msg: "Blocking you in the middle of that was cruel. You deserved to be able to reach me. I'm sorry.",
+    plan: ["Commit to never blocking during active conflict - ever", "If you need to stop the conversation, say so and set a time to resume", "Acknowledge how frightening and humiliating that was for them", "Understand this damages the sense of security in the relationship significantly"],
+    forgive: "38% - Deeply destabilising. If done once in genuine overwhelm: survivable. As a pattern: a serious control issue."
+  },
+  {
+    name: "Said 'I don't love you' in anger", sev: "nuclear",
+    title: "Words said in anger <em>don't disappear when the anger does.</em>",
+    score: "Nuclear", pct: 83, barClass: "bar-nuclear",
+    desc: "Saying you don't love someone - even in the heat of an argument - is a weapon that lands permanently. They will play it back. It becomes their new evidence.",
+    feeling: "Shattered. Unsure what the relationship even is now.",
+    mistake: "Immediately saying 'I didn't mean it' - they'll wonder which version is true.",
+    msg: "What I said wasn't true. I was in pain and I said the most damaging thing I could find. I love you. I hate that I said that.",
+    plan: ["Don't rush the explanation - let them sit with your apology first", "Give them full space to be as hurt as they are", "Remove that phrase from your conflict vocabulary permanently", "Understand they will need reassurance for a long time - don't rush them"],
+    forgive: "37% - Some people can't unhear it. Recovery requires deep and sustained reassurance over weeks, not days."
+  },
+  {
+    name: "Met up with an ex and didn't tell them", sev: "nuclear",
+    title: "The problem wasn't the meeting. <em>It was the secrecy.</em>",
+    score: "Nuclear", pct: 80, barClass: "bar-nuclear",
+    desc: "Meeting an ex in private isn't automatically a problem. Hiding that you did it is. The cover-up creates a question mark that's very hard to erase.",
+    feeling: "Betrayed and paranoid. Replaying every conversation wondering what else was hidden.",
+    mistake: "Saying 'I knew you'd overreact' - that's why you hid it, and it doesn't justify the hiding.",
+    msg: "I should have told you. I didn't because I knew it would be a conversation and I avoided it. That was wrong.",
+    plan: ["Full transparency about what the meeting was and what was said", "Don't make it about their reaction - own the secrecy", "Commit to no more secret contact with exes going forward", "Understand trust has to be rebuilt through transparency, not through time alone"],
+    forgive: "35% - Depends entirely on the relationship history and what the meeting was about. Hiding it is the unforgivable part."
+  },
+  {
+    name: "Threatened to leave during every argument", sev: "nuclear",
+    title: "You turned the relationship itself <em>into the weapon.</em>",
+    score: "Nuclear", pct: 84, barClass: "bar-nuclear",
+    desc: "Using the end of the relationship as a threat is one of the most damaging patterns possible. It keeps the other person in a state of constant insecurity and makes them afraid to raise anything.",
+    feeling: "Permanently anxious. Unable to feel secure no matter what.",
+    mistake: "Calling it 'just expressing how frustrated I am' - they hear it as a threat every time.",
+    msg: "Using leaving as a threat during arguments was wrong and I've been doing it too much. I don't want to leave. I want to fix how we fight.",
+    plan: ["Stop using leaving as rhetorical leverage - completely", "Recognise the anxiety this pattern has created in them", "If you're genuinely considering leaving, have that conversation separately and calmly", "Learn to express frustration without weaponising the relationship itself"],
+    forgive: "33% - Creates chronic insecurity. Recovery requires a complete change in how you argue, demonstrated over a long time."
+  },
+  {
+    name: "Kissed someone else", sev: "nuclear",
+    title: "There's no version of this <em>that doesn't count.</em>",
+    score: "Nuclear", pct: 90, barClass: "bar-nuclear",
+    desc: "Physical infidelity, even a single kiss, crosses a line that can't be uncrossed. How you handle the next moments will define whether there's any path forward at all.",
+    feeling: "Devastated, disoriented, and questioning everything they thought they knew.",
+    mistake: "Minimising it as 'just a kiss' or blaming the situation.",
+    msg: "I kissed someone else. I'm not going to minimise it or explain it away. I'm telling you because you deserve the truth.",
+    plan: ["Tell them fully and honestly - no partial truths", "Give them complete space to react without defending yourself", "Don't make any decisions about the relationship right now - let them lead", "If there's any path forward, it starts with full transparency and probably professional support"],
+    forgive: "25% - One of the hardest things to recover from. Whether it's possible depends entirely on the relationship, the context, and both people's commitment to repair."
+  },
+  {
+    name: "Made a major life decision without including them", sev: "nuclear",
+    title: "You changed the plan. <em>They didn't know there was a new one.</em>",
+    score: "Nuclear", pct: 77, barClass: "bar-nuclear",
+    desc: "Major decisions - changing jobs, moving, financial commitments - made without your partner signals they're not actually a partner. They're someone you inform, not include.",
+    feeling: "Irrelevant to their own life. Like the relationship is yours to manage and theirs to accept.",
+    mistake: "Saying 'I thought you'd be supportive' - support is different from consultation.",
+    msg: "I made a decision that affects both of us without talking to you. That wasn't partnership and I'm sorry.",
+    plan: ["Be honest about why you didn't include them - fear, control, or avoidance?", "Ask what they need now that the decision is made", "Establish clearly: major decisions happen together from now on", "Accept there may be ongoing consequences you'll need to work through"],
+    forgive: "42% - Depends heavily on the decision. Recoverable if genuinely course-corrected. Patterns of this erode the foundation of the relationship."
+  },
+  {
+    name: "Hid serious debt or financial problems", sev: "nuclear",
+    title: "Money secrets are <em>relationship secrets.</em>",
+    score: "Nuclear", pct: 85, barClass: "bar-nuclear",
+    desc: "Financial dishonesty - hidden debt, secret spending, concealed accounts - is one of the top relationship-ending discoveries. It affects the real-world life you're building together.",
+    feeling: "Blindsided and unsafe. What else is hidden? What is real?",
+    mistake: "Revealing only part of it and hoping the rest doesn't come out.",
+    msg: "I've been hiding something serious about my finances and you deserved to know. I'm telling you everything now.",
+    plan: ["Disclose everything fully - half-truths now will be full betrayals later", "Don't minimise the amount or the timeline", "Give them space to be angry, scared, and overwhelmed", "Get a clear plan for the financial situation and involve them in it"],
+    forgive: "31% - Financial secrets shake the foundation. Recovery requires full disclosure, concrete plans, and a lot of patience."
+  },
+  {
+    name: "Told others their deepest insecurity", sev: "nuclear",
+    title: "They gave you something fragile. <em>You dropped it publicly.</em>",
+    score: "Nuclear", pct: 87, barClass: "bar-nuclear",
+    desc: "Sharing something someone told you in complete vulnerability - their deepest fear or insecurity - is one of the worst things you can do with someone's trust.",
+    feeling: "Exposed and humiliated in their most sensitive place. Wondering if they can ever be vulnerable again.",
+    mistake: "Saying it 'came up naturally' in conversation - it never needed to come up.",
+    msg: "I shared something you told me in confidence that you never wanted anyone else to know. That was a profound betrayal and I am deeply sorry.",
+    plan: ["Acknowledge specifically what you shared and to whom", "Do not attempt to downplay it in any way", "Accept that this will take a very long time to recover from", "Give them complete control over how this is addressed going forward"],
+    forgive: "28% - This is one of the deepest cuts possible. Some people cannot come back from this."
+  },
+
+  // MORE BAD/MIXED
+  {
+    name: "Forgot their friend's name (again)", sev: "mild",
+    title: "It's not just a name. <em>It's whether you're paying attention.</em>",
+    score: "Mild", pct: 18, barClass: "bar-mild",
+    desc: "Forgetting someone's important person's name repeatedly signals you're not engaging with their life outside of you.",
+    feeling: "Like their world doesn't interest you enough to remember.",
+    mistake: "Laughing it off as a bad memory - it reads as not caring.",
+    msg: "I keep forgetting [name] and I know that's not okay. I'm paying attention now.",
+    plan: ["Use the name immediately to anchor it in memory", "Ask about the friend - show genuine interest in their life", "Don't make a joke of it - it's already embarrassing enough", "Connect the name to something - a detail that helps it stick"],
+    forgive: "85% - Very fixable. Just remember the name."
+  },
+  {
+    name: "Went through a hard time and pushed them away", sev: "cooked",
+    title: "You needed them. <em>You acted like you didn't.</em>",
+    score: "You Cooked", pct: 54, barClass: "bar-cooked",
+    desc: "Shutting down during difficult periods instead of letting your partner support you creates distance they can feel but can't explain. They'll wonder what they did wrong.",
+    feeling: "Helpless and rejected. Wanting to support you but not being allowed in.",
+    mistake: "Saying 'I just needed space' without acknowledging the impact on them.",
+    msg: "I pushed you away when I should have let you in. That wasn't about you - but it affected you and I'm sorry.",
+    plan: ["Acknowledge the specific period and how closed-off you were", "Ask if there's damage to repair - they may have hurt feelings they've been sitting on", "Practice asking for support instead of retreating", "Let them know this was your pattern, not a reflection of them"],
+    forgive: "60% - Understandable but painful. Recovery comes from opening up, not just explaining the closing."
+  },
+  {
+    name: "Flaked on supporting them during a stressful time", sev: "bad",
+    title: "They needed bandwidth from you. <em>You were elsewhere.</em>",
+    score: "Bad", pct: 46, barClass: "bar-bad",
+    desc: "Not showing up emotionally when someone is going through stress isn't always dramatic - but it's felt deeply. Your absence during their hard moments is remembered.",
+    feeling: "Alone in something they shouldn't have to face alone.",
+    mistake: "Pointing out that you were dealing with your own stuff - that comparison doesn't help.",
+    msg: "I wasn't there for you during that in the way you needed. I'm sorry. How are you actually doing now?",
+    plan: ["Check in properly - ask specific questions, not 'how are you'", "Acknowledge the period you dropped the ball on", "Don't redirect to your own stress - hold space for theirs", "Show up more actively for the next thing they're dealing with"],
+    forgive: "67% - Forgiven more easily if caught quickly and addressed. The longer it sits, the more it compounds."
+  },
+  {
+    name: "Pressured them into something they weren't comfortable with", sev: "nuclear",
+    title: "Their discomfort was visible. <em>You pushed anyway.</em>",
+    score: "Nuclear", pct: 88, barClass: "bar-nuclear",
+    desc: "Pressure overrides consent and comfort. Whether it was a social situation, a physical situation, or a decision - pushing past 'no' or 'I'm not sure' is a serious violation.",
+    feeling: "Unsafe and unheard. Wondering if their boundaries matter to you.",
+    mistake: "Saying 'but you went along with it' - going along with pressure is not agreement.",
+    msg: "I pushed when I should have stopped. Your hesitation was real and I ignored it. That was wrong.",
+    plan: ["Do not defend your actions or their outcome", "Ask how they're feeling about it - and listen without deflecting", "Establish clearly that their no or maybe means stop", "Reflect seriously on the pattern - this cannot happen again"],
+    forgive: "22% - Deeply serious. This crosses into safety territory. Requires complete accountability and professional support."
+  },
+  {
+    name: "Imitated or mocked the way they speak or act", sev: "bad",
+    title: "You turned something natural about them <em>into a bit.</em>",
+    score: "Bad", pct: 38, barClass: "bar-bad",
+    desc: "Imitating someone's accent, speech patterns, or mannerisms - even for a laugh - makes them feel studied and mocked rather than loved.",
+    feeling: "Self-conscious. Like the way they naturally are is something to be laughed at.",
+    mistake: "Saying others found it funny - that makes it worse, not better.",
+    msg: "I mocked the way you [speak/act] and that wasn't kind. The way you are isn't a joke. I'm sorry.",
+    plan: ["Stop doing it immediately and completely", "Acknowledge the specific thing you mocked", "Ask if this has affected how comfortable they are around you", "Examine whether imitation and sarcasm are recurring habits at their expense"],
+    forgive: "68% - Forgivable when stopped and genuinely acknowledged. Repeated is a form of low-level contempt."
+  },
+  {
+    name: "Agreed to something then quietly dropped it", sev: "bad",
+    title: "You said yes. <em>Then you just... didn't.</em>",
+    score: "Bad", pct: 37, barClass: "bar-bad",
+    desc: "Agreeing to make a change or do something and then quietly not doing it is a form of passive dishonesty. It erodes confidence in your word.",
+    feeling: "Foolish for believing it would be different this time.",
+    mistake: "Waiting until they bring it up to acknowledge it didn't happen.",
+    msg: "I said I would and then I didn't. I'm not going to make another promise right now - I'm going to just do it.",
+    plan: ["Don't make another promise - make a plan with a date", "Acknowledge this has happened before if it has", "Ask what specific thing they need from you to feel like this is real", "Follow through on one small thing immediately - not a grand gesture"],
+    forgive: "66% - Trust erodes each time. Recovery is through action, not words."
+  },
+  {
+    name: "Used their past against them in a fight", sev: "cooked",
+    title: "You reached into the past <em>to hurt them in the present.</em>",
+    score: "You Cooked", pct: 63, barClass: "bar-cooked",
+    desc: "Bringing up past mistakes, old insecurities, or things they've confided to you as weapons in a fight is a serious breach of the emotional safety in a relationship.",
+    feeling: "Like nothing they've shared or worked through is safe with you.",
+    mistake: "Justifying it with 'I was just being honest' - weaponised history isn't honesty.",
+    msg: "I used your past against you in the fight and that was a low thing to do. That wasn't fair. I'm sorry.",
+    plan: ["Agree to a rule: past issues that are resolved stay in the past", "Acknowledge specifically what you brought up and why it was unfair", "Think about what you were actually trying to say - and say that instead next time", "Give them reassurance that their past is safe with you"],
+    forgive: "54% - Leaves a mark. Forgiven with consistent proof that it won't happen again."
+  },
+  {
+    name: "Made them feel guilty for spending time without you", sev: "bad",
+    title: "They needed space. <em>You made them pay for it.</em>",
+    score: "Bad", pct: 41, barClass: "bar-bad",
+    desc: "Guilt-tripping someone for having their own life - seeing friends, having alone time - is a form of control that makes independence feel like a betrayal.",
+    feeling: "Trapped. Like they have to choose between you and having a life.",
+    mistake: "Framing it as 'I just miss you' without acknowledging the pressure it creates.",
+    msg: "I made you feel guilty for spending time away from me and that wasn't fair. You're allowed to have your own life.",
+    plan: ["Reflect on whether this is a pattern of controlling behaviour", "Fill your own time instead of waiting resentfully for them to return", "When they come back, be genuinely happy to see them - not pointed", "Talk about what's underneath the need - loneliness, insecurity - address that directly"],
+    forgive: "63% - Forgivable if it stops and is genuinely addressed. Sustained guilt-tripping becomes a form of emotional manipulation."
+  },
+  {
+    name: "Shared something they told you in confidence - to be funny", sev: "cooked",
+    title: "You got a laugh. <em>At their expense.</em>",
+    score: "You Cooked", pct: 66, barClass: "bar-cooked",
+    desc: "Using someone's private moments as comedy for others is a double betrayal: trust and dignity at the same time. Even if people laughed, you sold them out for it.",
+    feeling: "Humiliated and betrayed. Wondering what else you've shared for a laugh.",
+    mistake: "Saying they would have found it funny - they didn't, and they didn't get to choose.",
+    msg: "I shared something you told me privately to get a laugh and that was wrong on every level. I'm sorry.",
+    plan: ["Acknowledge specifically what you shared and who heard it", "Don't justify the story or how it was received", "Understand this affects how much they'll trust you with anything personal", "The habit of making private things public needs to stop entirely"],
+    forgive: "51% - Hard to come back from. Requires proof over time that private things stay private."
+  },
+  {
+    name: "Forgot something they told you mattered to them", sev: "bad",
+    title: "They told you it was important. <em>You forgot.</em>",
+    score: "Bad", pct: 33, barClass: "bar-bad",
+    desc: "Forgetting things people have shared - their big meeting, a difficult event, something they were nervous about - signals you weren't really listening when it mattered.",
+    feeling: "Invisible. Like what matters to them doesn't register with you.",
+    mistake: "Making it about your memory rather than about their need to feel remembered.",
+    msg: "I forgot about [the thing] and I know that stings. It mattered to you and I wasn't paying proper attention. I'm sorry.",
+    plan: ["Ask how it went - better late than never", "Set reminders for things they tell you are important", "Make a habit of checking in before and after events they've mentioned", "Show that you're paying attention now, even if you missed the moment"],
+    forgive: "73% - Forgiven quickly if acknowledged. A recurring pattern becomes 'you never listen.'"
+  },
+  {
+    name: "Minimised a mental health struggle they shared", sev: "cooked",
+    title: "They trusted you with something heavy. <em>You made it lighter than it was.</em>",
+    score: "You Cooked", pct: 67, barClass: "bar-cooked",
+    desc: "Telling someone to 'think positive', 'exercise more', or that 'everyone feels like that' when they share a mental health struggle is deeply invalidating.",
+    feeling: "Ashamed of something they were already vulnerable about. Less likely to share again.",
+    mistake: "Following up with 'I was just trying to help' - well-meaning dismissal is still dismissal.",
+    msg: "I responded to what you shared in a way that was dismissive. That wasn't what you needed and I'm sorry. Do you want to tell me more?",
+    plan: ["Listen first - don't offer solutions unless asked", "Learn the difference between support and problem-solving", "Ask 'what would help you right now?' and do that", "If it's beyond what you know how to support, encourage professional help - gently and without making them feel broken"],
+    forgive: "55% - Stings deeply because vulnerability was involved. Recovery through genuine listening and follow-up care."
   }
 ];
 
@@ -773,6 +1397,46 @@ function submitModal() {
   alert('Got it. In a real version, this would send your situation for a personalised plan.');
 }
 
+function isMobile() { return window.innerWidth <= 640; }
+
+function goBack() {
+  activeIdx = null;
+  localStorage.removeItem('lastIdx');
+  renderList();
+  document.getElementById('emptyState').style.display = '';
+  document.getElementById('assessment').classList.remove('show');
+  if (isMobile()) {
+    document.querySelector('.left-col').classList.remove('slide-out');
+    document.querySelector('.right-col').classList.remove('slide-in');
+  }
+}
+
+function submitCustom() {
+  const text = document.getElementById('customInput').value.trim();
+  if (!text) { document.getElementById('customInput').focus(); return; }
+  const custom = {
+    name: "Your situation",
+    sev: "bad",
+    title: "You know what you did. <em>Now fix it.</em>",
+    score: "Unclear", pct: 50, barClass: "bar-bad",
+    desc: "Every situation is different, but the fundamentals of repair are the same: own it fully, don't minimise, and ask what they need - don't assume.",
+    feeling: "Hurt, confused, or disappointed - depending on what happened. What matters now is that they feel heard.",
+    mistake: "Explaining yourself before you've fully acknowledged how they feel. The explanation can wait.",
+    msg: "I know what I did wasn't okay. I'm not going to make excuses. I just want you to know I understand why you're upset and I'm genuinely sorry.",
+    plan: [
+      "Acknowledge what happened specifically - not 'I'm sorry you feel that way'",
+      "Ask what they need from you right now, then actually do it",
+      "Give them space if they ask for it - don't push for forgiveness on your timeline",
+      "Show through actions, not just words, that it won't happen again"
+    ],
+    forgive: "?% - Depends entirely on the situation. Use the message above as a starting point, then adapt to what actually happened."
+  };
+  activeIdx = 'custom';
+  renderList();
+  showAssessment(custom);
+  document.getElementById('customInput').value = '';
+}
+
 function selectItem(idx) {
   if (activeIdx === idx) {
     activeIdx = null;
@@ -780,12 +1444,19 @@ function selectItem(idx) {
     renderList();
     document.getElementById('emptyState').style.display = '';
     document.getElementById('assessment').classList.remove('show');
+    if (isMobile()) {
+      document.querySelector('.left-col').classList.remove('slide-out');
+      document.querySelector('.right-col').classList.remove('slide-in');
+    }
     return;
   }
   activeIdx = idx;
   localStorage.setItem('lastIdx', idx);
   renderList();
-  const d = data[idx];
+  showAssessment(data[idx]);
+}
+
+function showAssessment(d) {
   document.getElementById('emptyState').style.display = 'none';
   const ass = document.getElementById('assessment');
   ass.classList.add('show');
@@ -804,10 +1475,16 @@ function selectItem(idx) {
     `<div class="plan-item"><div class="plan-dot">${i+1}</div><span>${p}</span></div>`
   ).join('');
   document.getElementById('forgivePct').textContent = d.forgive.split('%')[0] + '%';
-  document.getElementById('forgiveText').textContent = d.forgive.split('— ')[1] || '';
+  document.getElementById('forgiveText').textContent = d.forgive.split('- ')[1] || '';
   document.getElementById('copyBtn').textContent = 'Copy';
   document.getElementById('copyBtn').classList.remove('copied');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (isMobile()) {
+    document.querySelector('.left-col').classList.add('slide-out');
+    document.querySelector('.right-col').classList.add('slide-in');
+    document.querySelector('.right-col').scrollTop = 0;
+  } else {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }
 
 // Restore last selection
